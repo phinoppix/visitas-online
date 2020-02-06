@@ -1,0 +1,16 @@
+version: "3.7"
+services:
+  data:
+    build: ../visitas.net/VisitasDataService
+    image: phinoppix/visitas-backend
+    container_name: visitas-dev-container
+    environment:
+      ASPNETCORE_URLS: "https://+;http://+"
+      ASPNETCORE_HTTPS_PORT: 5001
+      ASPNETCORE_Kestrel__Certificates__Default__Password: "ab1Password"
+      ASPNETCORE_Kestrel__Certificates__Default__Path: "/https/visitas-dev.pfx"
+    ports:
+      - "5000:80"
+      - "5001:443"
+    volumes:
+      - ${HOME}/.aspnet/https:/https/
