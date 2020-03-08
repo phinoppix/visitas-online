@@ -1,16 +1,42 @@
 version: "3.7"
+
+networks:
+  visitas-net:
+    driver: bridge
+
 services:
-  data:
-    build: ../visitas.net/VisitasDataService
-    image: phinoppix/visitas-backend
+  # data:
+  #   build: ../visitas.net/VisitasDataService
+  #   image: phinoppix/visitas-backend
+  #   environment:
+  #     ASPNETCORE_URLS: "https://+;http://+"
+  #     ASPNETCORE_HTTPS_PORT: 5001
+  #     ASPNETCORE_Kestrel__Certificates__Default__Password: "ab1Password"
+  #     ASPNETCORE_Kestrel__Certificates__Default__Path: "/https/visitas-dev.pfx"
+  #   ports:
+  #     - "5000:80"
+  #     - "5001:443"
+  #   volumes:
+  #     - ${HOME}/.aspnet/https:/https/
+  #   container_name: visitas-dev-container
+
+  db:
+    build: ./db-service
+    image: phinoppix/visitas-db-service
+    restart: always
     container_name: visitas-dev-container
-    environment:
-      ASPNETCORE_URLS: "https://+;http://+"
-      ASPNETCORE_HTTPS_PORT: 5001
-      ASPNETCORE_Kestrel__Certificates__Default__Password: "ab1Password"
-      ASPNETCORE_Kestrel__Certificates__Default__Path: "/https/visitas-dev.pfx"
-    ports:
-      - "5000:80"
-      - "5001:443"
     volumes:
-      - ${HOME}/.aspnet/https:/https/
+      - ${HOME}/dockerized-databases/postgres/visitas:/var/lib/postgresql/data
+    networks:
+      - visitas-net
+  
+  # Adminer loaded for diagnosing Postgres container and to make
+  # sure the bridge network is configured properly.
+  # http://localhost:8080/
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - "8080:8080"
+    networks:
+      - visitas-net

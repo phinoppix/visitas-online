@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="4292f19b-63d7-4d78-bfd9-820dbf8b9b76" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/../docker/db-service/Dockerfile" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../docker/db-service/init.sql" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/visitas-api.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/README.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/nodemon.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/data-loaders/congregation-loader.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/data-loaders/contact-loader.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/data-loaders/territory-loader.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/resolvers/index.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/schema/data-schema.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/schema/index.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/schema/query-schema.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/schema/types.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/server.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../docker/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/../docker/docker-compose.yml" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="JavaScript File" />
+        <option value="TypeScript File" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="ProjectId" id="1Xnnt48ZVqnQmYQcl7e9U44oTVy" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="autoscrollFromSource" value="true" />
+    <option name="autoscrollToSource" value="true" />
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+    <option name="showMembers" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="nodejs_package_manager_path" value="yarn" />
+    <property name="ts.external.directory.path" value="$PROJECT_DIR$/node_modules/typescript/lib" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src" />
+      <recent name="$PROJECT_DIR$/schema" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="Unnamed" type="ChromiumRemoteDebugType" factoryName="Chromium Remote" nameIsGenerated="true" port="9229">
+      <method v="2" />
+    </configuration>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="4292f19b-63d7-4d78-bfd9-820dbf8b9b76" name="Default Changelist" comment="" />
+      <created>1581690937812</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1581690937812</updated>
+      <workItem from="1581690942054" duration="11329000" />
+      <workItem from="1583033313043" duration="2082000" />
+      <workItem from="1583121006094" duration="1342000" />
+      <workItem from="1583442344016" duration="14978000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+    <option name="additionalRoots">
+      <list>
+        <option value="$PROJECT_DIR$/node_modules" />
+      </list>
+    </option>
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="304" y="157" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1583639316787">
+      <screen x="0" y="23" width="1680" height="944" />
+    </state>
+    <state x="304" y="157" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.23.1680.944@0.23.1680.944" timestamp="1583639316787" />
+    <state width="1659" height="303" key="GridCell.Tab.0.bottom" timestamp="1583640790685">
+      <screen x="0" y="23" width="1680" height="944" />
+    </state>
+    <state width="1659" height="303" key="GridCell.Tab.0.bottom/0.23.1680.944@0.23.1680.944" timestamp="1583640790685" />
+    <state width="1659" height="303" key="GridCell.Tab.0.center" timestamp="1583640790684">
+      <screen x="0" y="23" width="1680" height="944" />
+    </state>
+    <state width="1659" height="303" key="GridCell.Tab.0.center/0.23.1680.944@0.23.1680.944" timestamp="1583640790684" />
+    <state width="1659" height="303" key="GridCell.Tab.0.left" timestamp="1583640790682">
+      <screen x="0" y="23" width="1680" height="944" />
+    </state>
+    <state width="1659" height="303" key="GridCell.Tab.0.left/0.23.1680.944@0.23.1680.944" timestamp="1583640790682" />
+    <state width="1659" height="303" key="GridCell.Tab.0.right" timestamp="1583640790685">
+      <screen x="0" y="23" width="1680" height="944" />
+    </state>
+    <state width="1659" height="303" key="GridCell.Tab.0.right/0.23.1680.944@0.23.1680.944" timestamp="1583640790685" />
+    <state width="1659" height="303" key="GridCell.Tab.1.bottom" timestamp="1583640795019">
+      <screen x="0" y="23" width="1680" height="944" />
+    </state>
+    <state width="1659" height="303" key="GridCell.Tab.1.bottom/0.23.1680.944@0.23.1680.944" timestamp="1583640795019" />
+    <state width="1659" height="303" key="GridCell.Tab.1.center" timestamp="1583640795018">
+      <screen x="0" y="23" width="1680" height="944" />
+    </state>
+    <state width="1659" height="303" key="GridCell.Tab.1.center/0.23.1680.944@0.23.1680.944" timestamp="1583640795018" />
+    <state width="1659" height="303" key="GridCell.Tab.1.left" timestamp="1583640795017">
+      <screen x="0" y="23" width="1680" height="944" />
+    </state>
+    <state width="1659" height="303" key="GridCell.Tab.1.left/0.23.1680.944@0.23.1680.944" timestamp="1583640795017" />
+    <state width="1659" height="303" key="GridCell.Tab.1.right" timestamp="1583640795018">
+      <screen x="0" y="23" width="1680" height="944" />
+    </state>
+    <state width="1659" height="303" key="GridCell.Tab.1.right/0.23.1680.944@0.23.1680.944" timestamp="1583640795018" />
+    <state width="1659" height="303" key="GridCell.Tab.2.bottom" timestamp="1583640790524">
+      <screen x="0" y="23" width="1680" height="944" />
+    </state>
+    <state width="1659" height="303" key="GridCell.Tab.2.bottom/0.23.1680.944@0.23.1680.944" timestamp="1583640790524" />
+    <state width="1659" height="303" key="GridCell.Tab.2.center" timestamp="1583640790522">
+      <screen x="0" y="23" width="1680" height="944" />
+    </state>
+    <state width="1659" height="303" key="GridCell.Tab.2.center/0.23.1680.944@0.23.1680.944" timestamp="1583640790522" />
+    <state width="1659" height="303" key="GridCell.Tab.2.left" timestamp="1583640790522">
+      <screen x="0" y="23" width="1680" height="944" />
+    </state>
+    <state width="1659" height="303" key="GridCell.Tab.2.left/0.23.1680.944@0.23.1680.944" timestamp="1583640790522" />
+    <state width="1659" height="303" key="GridCell.Tab.2.right" timestamp="1583640790523">
+      <screen x="0" y="23" width="1680" height="944" />
+    </state>
+    <state width="1659" height="303" key="GridCell.Tab.2.right/0.23.1680.944@0.23.1680.944" timestamp="1583640790523" />
+    <state x="505" y="230" width="670" height="676" key="search.everywhere.popup" timestamp="1582065883825">
+      <screen x="0" y="23" width="1680" height="947" />
+    </state>
+    <state x="505" y="230" width="670" height="676" key="search.everywhere.popup/0.23.1680.947@0.23.1680.947" timestamp="1582065883825" />
+  </component>
+</project>
