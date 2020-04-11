@@ -4,6 +4,7 @@ export interface QueryArgsContactsPerTerritory {
   congregationCode: string;
   territoryCode: string;
 }
+
 export interface QueryArgsWithCongCode {
   congCode: string;
 }

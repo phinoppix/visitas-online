@@ -1,11 +1,4 @@
-const fixtures = {
-  congs: [
-    {
-      code: 'CA-HEARTLAKE',
-      name: 'Heartlake Tagalog',
-    }
-  ]
-};
+import fixtures from '../assets/fixtures';
 
 export const congregationLoader = {
   // Pull cong data from cache when possible

@@ -7,7 +7,7 @@
     "debug": "nodemon",
     "build": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node src/server.ts"
+    "start": "node dist/server.js"
   },
   "type": "commonjs",
   "keywords": [],

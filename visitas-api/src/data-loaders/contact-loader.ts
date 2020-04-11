@@ -1,19 +1,6 @@
-import { Contact } from '../schema/types';
-
-const fixtures: Contact[] = [
-  {
-    name: 'Aris Tiru',
-    status: 'new',
-    full_address: '89 Kenpark Avenue',
-    territory: {
-      code: '1001',
-    },
-    congregation: {
-      code: 'CA-HEARTLAKE'
-    }
-  }
-];
+import { Contact } from '../schema/data-types';
+import fixtures from '../assets/fixtures';
 
 export const contactLoader = {
-  getList: (congregationCode: string, territoryCode: string) => fixtures
+  getList: (congregationCode: string, territoryCode: string) => fixtures.contacts
 };

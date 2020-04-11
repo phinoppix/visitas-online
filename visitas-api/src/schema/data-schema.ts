@@ -6,6 +6,11 @@ export const dataSchema = gql`
     date: String
   }
   
+  interface IStampableEntity {
+    created: Stamp
+    updated: Stamp
+  }
+  
   type GeoCoordinates {
     latitude: Float
     longitude: Float
@@ -15,48 +20,61 @@ export const dataSchema = gql`
     countTerritories: Int
   }
   
-  type Congregation {
+  type Congregation implements IStampableEntity {
     code: String!
-    name: String!
-    created: Stamp
-    updated: Stamp
+    name: String
     territories: [Territory]
     aggregates: CongregationAggregates
+    
+    created: Stamp
+    updated: Stamp
   }
   
-  type Contact {
+  type Contact implements IStampableEntity {
     name: String!
     full_address: String
     location_data: String
     status: String!
     remarks: String
-    created: Stamp
-    updated: Stamp
     territory: Territory
     congregation: Congregation
+    
+    created: Stamp
+    updated: Stamp
   }
   
-  type CheckoutEntry {
+  type CheckoutEntry implements IStampableEntity {
     userId: String!
-    checkOut: String!
+    checkOut: String
     checkIn: String
+    
     created: Stamp
     updated: Stamp
   }
   
   type TerritoryAggregates {
     countContacts: Int
+    checkedOut: String
   }
   
-  type Territory {
+  type CampaignMetadata {
+    name: String
+    starts: String
+    ends: String
+  }
+  
+  type Territory implements IStampableEntity {
     code: String!
     name: String
     boundaries: [GeoCoordinates]
     congregation: Congregation!
-    created: Stamp
-    updated: Stamp
     contacts: [Contact]
     checkouts: [CheckoutEntry]
     aggregates: TerritoryAggregates
+    campaign: CampaignMetadata
+    valid: Boolean!
+    
+    created: Stamp
+    updated: Stamp
   }
 `;
