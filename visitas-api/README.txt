@@ -3,10 +3,10 @@ Test data
 > http://localhost:4000
 ```
 query {
-  territoriesPerCong(congregationCode:"AAA") {
+  territoriesPerDivision(divisionCode:"AAA") {
     code
     name
-    congregation {
+    division {
       name
     }
     boundaries{
@@ -17,21 +17,21 @@ query {
       countContacts
     }
   }
-  congregation(congCode:"CA-HEARTLAKE") {
+  division(divisionCode:"CA-HEARTLAKE") {
     code
     name
     aggregates {
       countTerritories
     }
   }
-  contactsPerTerritory(congregationCode:"CA-HEARTLAKE") {
+  contactsPerTerritory(divisionCode:"CA-HEARTLAKE") {
     name
     full_address
     territory {
       code
       name
     }
-    congregation{
+    division{
       code
       name
     }

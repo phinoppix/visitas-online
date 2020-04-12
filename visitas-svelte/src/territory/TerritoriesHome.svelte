@@ -29,7 +29,7 @@
   const territories = query(client, {
     query: QUERY_GET_TERRITORIES,
     variables: {
-      congCode: 'CA-HEARTLAKE'
+      divisionCode: 'CA-HEARTLAKE'
     }
   });
 </script>
@@ -87,7 +87,7 @@
   {#await $territories}
     ...Loading
   {:then result}
-    <TerritoryList territories={result.data.territoriesPerCong}/>
+    <TerritoryList territories={result.data.territoriesPerDivision}/>
   {/await}
   </FrameBox>
 </main>

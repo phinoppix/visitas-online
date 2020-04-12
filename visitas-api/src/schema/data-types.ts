@@ -13,7 +13,8 @@ export interface GeoCoordinates {
   longitude: number;
 }
 
-export interface Congregation extends IStampableEntity {
+export interface Division extends IStampableEntity {
+  id: number;
   code: string;
   name?: string;
   territories?: Territory[];
@@ -29,7 +30,7 @@ export interface Contact extends IStampableEntity {
   status: string;
   remarks?: string;
   territory?: Territory;
-  congregation?: Congregation;
+  division?: Division;
 }
 
 export interface CheckoutEntry extends IStampableEntity {
@@ -39,10 +40,11 @@ export interface CheckoutEntry extends IStampableEntity {
 }
 
 export interface Territory extends IStampableEntity {
+  id: number;
   code: string;
   name?: string;
   boundaries: GeoCoordinates[];
-  congregation: Congregation;
+  division: Division;
   contacts?: Contact[];
   checkouts?: CheckoutEntry[];
   aggregates?: {

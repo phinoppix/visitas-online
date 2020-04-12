@@ -1,8 +1,8 @@
 import { gql } from 'apollo-boost';
 
 export const QUERY_GET_TERRITORIES = gql`
-query GetTerritories($congCode: String!) {
-  territoriesPerCong(congregationCode: $congCode) {
+query GetTerritories($divisionCode: String!) {
+  territoriesPerDivision(divisionCode: $divisionCode) {
     code
     name
   }
@@ -18,7 +18,7 @@ mutation UpsertTerritory($territory: InputUpsertTerritory!) {
       latitude
       longitude
     }
-    congregation {
+    division {
       code
       name
     }

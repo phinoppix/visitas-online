@@ -172,8 +172,8 @@ $.validator.addMethod( "bic", function( value, element ) {
  *   M. Old format
  *   N. Nonresident entities
  *   P. Local authorities
- *   Q. Autonomous bodies, state or not, and the like, and congregations and religious institutions
- *   R. Congregations and religious institutions (since 2008 ORDER EHA/451/2008)
+ *   Q. Autonomous bodies, state or not, and the like, and divisions and religious institutions
+ *   R. Divisions and religious institutions (since 2008 ORDER EHA/451/2008)
  *   S. Organs of State Administration and regions
  *   V. Agrarian Transformation
  *   W. Permanent establishments of non-resident in Spain

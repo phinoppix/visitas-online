@@ -20,23 +20,40 @@ services:
   #     - ${HOME}/.aspnet/https:/https/
   #   container_name: visitas-dev-container
 
-  db:
-    build: ./db-service
-    image: phinoppix/visitas-db-service
+#  db:
+#    build: ./postgresql
+#    image: phinoppix/visitas-db-service
+#    restart: always
+#    container_name: visitas-dev-container
+#    volumes:
+#      - ${HOME}/dockerized-databases/postgres/visitas:/var/lib/postgresql/data
+#    ports:
+#      - "5432:5432"
+#    networks:
+#      - visitas-net
+
+#  # Adminer loaded for diagnosing Postgres container and to make
+#  # sure the bridge network is configured properly.
+#  # http://localhost:8080/
+#  adminer:
+#    image: adminer
+#    restart: always
+#    ports:
+#      - "8080:8080"
+#    networks:
+#      - visitas-net
+
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2019-latest
     restart: always
     container_name: visitas-dev-container
-    volumes:
-      - ${HOME}/dockerized-databases/postgres/visitas:/var/lib/postgresql/data
+    environment:
+      ACCEPT_EULA: Y
+      SA_PASSWORD: Visitas!2020
+      MSSQL_PID: Express
     networks:
       - visitas-net
-  
-  # Adminer loaded for diagnosing Postgres container and to make
-  # sure the bridge network is configured properly.
-  # http://localhost:8080/
-  adminer:
-    image: adminer
-    restart: always
     ports:
-      - "8080:8080"
-    networks:
-      - visitas-net
+      - "1433:1433"
+    volumes:
+      - ${HOME}/dockerized-databases/sqlserver/visitas:/var/lib/postgresql/data

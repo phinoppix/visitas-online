@@ -100,10 +100,10 @@ SET default_tablespace = '';
 
 --
 -- TOC entry 223 (class 1259 OID 18595)
--- Name: cong; Type: TABLE; Schema: public; Owner: -
+-- Name: division; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.cong (
+CREATE TABLE public.division (
     id integer NOT NULL,
     code character varying(30) NOT NULL,
     name character varying(50) NOT NULL,
@@ -114,10 +114,10 @@ CREATE TABLE public.cong (
 
 --
 -- TOC entry 222 (class 1259 OID 18593)
--- Name: cong_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: division_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE public.cong_id_seq
+CREATE SEQUENCE public.division_id_seq
     AS integer
     START WITH 1
     INCREMENT BY 1
@@ -129,19 +129,19 @@ CREATE SEQUENCE public.cong_id_seq
 --
 -- TOC entry 4812 (class 0 OID 0)
 -- Dependencies: 222
--- Name: cong_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: division_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE public.cong_id_seq OWNED BY public.cong.id;
+ALTER SEQUENCE public.division_id_seq OWNED BY public.division.id;
 
 
 --
 -- TOC entry 229 (class 1259 OID 18643)
--- Name: cong_territories; Type: TABLE; Schema: public; Owner: -
+-- Name: division_territories; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.cong_territories (
-    cong_id integer NOT NULL,
+CREATE TABLE public.division_territories (
+    division_id integer NOT NULL,
     territory_id integer NOT NULL
 );
 
@@ -229,10 +229,10 @@ ALTER SEQUENCE public.territory_id_seq OWNED BY public.territory.id;
 
 --
 -- TOC entry 4647 (class 2604 OID 18598)
--- Name: cong id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: division id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.cong ALTER COLUMN id SET DEFAULT nextval('public.cong_id_seq'::regclass);
+ALTER TABLE ONLY public.division ALTER COLUMN id SET DEFAULT nextval('public.division_id_seq'::regclass);
 
 
 --
@@ -245,20 +245,20 @@ ALTER TABLE ONLY public.territory ALTER COLUMN id SET DEFAULT nextval('public.te
 
 --
 -- TOC entry 4660 (class 2606 OID 18600)
--- Name: cong cong_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: division division_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.cong
-    ADD CONSTRAINT cong_pkey PRIMARY KEY (id);
+ALTER TABLE ONLY public.division
+    ADD CONSTRAINT division_pkey PRIMARY KEY (id);
 
 
 --
 -- TOC entry 4670 (class 2606 OID 18647)
--- Name: cong_territories cong_territories_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: division_territories division_territories_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.cong_territories
-    ADD CONSTRAINT cong_territories_pkey PRIMARY KEY (cong_id, territory_id);
+ALTER TABLE ONLY public.division_territories
+    ADD CONSTRAINT division_territories_pkey PRIMARY KEY (division_id, territory_id);
 
 
 --
@@ -299,20 +299,20 @@ ALTER TABLE ONLY public.territory
 
 --
 -- TOC entry 4673 (class 2606 OID 18648)
--- Name: cong_territories fk_cong_territories_cong; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: division_territories fk_division_territories_division; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.cong_territories
-    ADD CONSTRAINT fk_cong_territories_cong FOREIGN KEY (cong_id) REFERENCES public.cong(id) NOT VALID;
+ALTER TABLE ONLY public.division_territories
+    ADD CONSTRAINT fk_division_territories_division FOREIGN KEY (division_id) REFERENCES public.division(id) NOT VALID;
 
 
 --
 -- TOC entry 4674 (class 2606 OID 18653)
--- Name: cong_territories fk_cong_territories_territory; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: division_territories fk_division_territories_territory; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.cong_territories
-    ADD CONSTRAINT fk_cong_territories_territory FOREIGN KEY (territory_id) REFERENCES public.territory(id) NOT VALID;
+ALTER TABLE ONLY public.division_territories
+    ADD CONSTRAINT fk_division_territories_territory FOREIGN KEY (territory_id) REFERENCES public.territory(id) NOT VALID;
 
 
 --
@@ -348,3 +348,4 @@ ALTER TABLE ONLY public.territory_contacts
 -- PostgreSQL database dump complete
 --
 
+INSERT INTO division (code, name, created) VALUES ('CA-HEARTLAKE', 'Heartlake Tagalog, Brampton ON', ROW('admin', '2020-04-07'));

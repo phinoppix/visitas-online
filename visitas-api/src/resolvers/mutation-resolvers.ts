@@ -1,21 +1,21 @@
 import {
-  InputAddCongregation,
+  InputAddDivision,
   InputUpsertTerritory,
   MutationResponse,
   InputUpsertContact
 } from '../schema/mutation-types';
-import { congregationMutator } from '../data-mutators/congregation-mutator';
+import { divisionMutator } from '../data-mutators/division-mutator';
 import { territoryMutator } from '../data-mutators/territory-mutator';
 import { Stamp, GeoCoordinates } from '../schema/data-types';
 import { contactMutator } from '../data-mutators/contact-mutator';
 
 export const mutationResolvers = {
   Mutation: {
-    addCongregation: (_: any, args: { cong: InputAddCongregation }) => congregationMutator.add(args.cong),
+    addDivision: (_: any, args: { division: InputAddDivision }) => divisionMutator.add(args.division),
 
     // Territory mutations
-    upsertTerritory: (_: any, args: { territory: InputUpsertTerritory }) =>
-      territoryMutator.upsertTerritory(args.territory),
+    upsertTerritory: async (_: any, args: { territory: InputUpsertTerritory }) =>
+      await territoryMutator.upsertTerritory(args.territory),
     removeTerritory: (_: any, args: { territoryCode: string }): MutationResponse => ({
       status: "KO",
       error: "Not yet implemented."

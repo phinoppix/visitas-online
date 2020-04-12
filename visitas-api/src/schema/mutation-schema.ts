@@ -20,12 +20,13 @@ export const mutationSchema = gql`
     longitude: Float
   }
   
-  input InputAddCongregation {
+  input InputAddDivision {
     code: String
     name: String
   }
   
   input InputUpsertTerritory {
+    id: Int
     code: String
     name: String
     boundaries: [InputGeoCoordinates]
@@ -38,12 +39,12 @@ export const mutationSchema = gql`
     location_data: String
     status: String!
     remarks: String
-    congregation: InputCode
+    division: InputCode
     updated: InputStamp
   }
   
   type Mutation {
-    addCongregation(cong: InputAddCongregation): Congregation
+    addDivision(division: InputAddDivision): Division
     
     # Territory mutations
     upsertTerritory(territory: InputUpsertTerritory): Territory

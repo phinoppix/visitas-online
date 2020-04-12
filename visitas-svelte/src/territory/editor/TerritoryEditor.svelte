@@ -29,7 +29,7 @@
           }
         }
       });
-      console.log('saveTerritory OK', territory);
+      navigate(urlCaller);
     } catch (error) {
       console.log('saveTerritory failed', error);
     }
@@ -60,6 +60,16 @@
     display: flex;
     flex-direction: row;
     justify-content: center;
+  }
+  label {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+  label > input {
+    flex: 1;
+    max-width: 70%;
   }
 </style>
 

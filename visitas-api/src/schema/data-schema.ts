@@ -16,15 +16,15 @@ export const dataSchema = gql`
     longitude: Float
   }
   
-  type CongregationAggregates {
+  type DivisionAggregates {
     countTerritories: Int
   }
   
-  type Congregation implements IStampableEntity {
+  type Division implements IStampableEntity {
     code: String!
     name: String
     territories: [Territory]
-    aggregates: CongregationAggregates
+    aggregates: DivisionAggregates
     
     created: Stamp
     updated: Stamp
@@ -37,7 +37,7 @@ export const dataSchema = gql`
     status: String!
     remarks: String
     territory: Territory
-    congregation: Congregation
+    division: Division
     
     created: Stamp
     updated: Stamp
@@ -67,7 +67,7 @@ export const dataSchema = gql`
     code: String!
     name: String
     boundaries: [GeoCoordinates]
-    congregation: Congregation!
+    division: Division!
     contacts: [Contact]
     checkouts: [CheckoutEntry]
     aggregates: TerritoryAggregates

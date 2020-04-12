@@ -8,8 +8,9 @@ export const contactMutator = {
       name: contact.name,
       full_address: contact.full_address,
       location_data: contact.location_data,
-      congregation: {
-        code: contact.congregation?.code!
+      division: {
+        id: 0,
+        code: contact.division?.code!
       },
       remarks: contact.remarks,
       status: contact.status,

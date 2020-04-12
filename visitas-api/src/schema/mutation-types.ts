@@ -7,12 +7,13 @@ export interface MutationResponse {
   error?: string;
 }
 
-export interface InputAddCongregation {
+export interface InputAddDivision {
   code: string;
   name: string;
 }
 
 export interface InputUpsertTerritory {
+  id: number;
   code: string;
   name: string;
   boundaries: GeoCoordinates[]
@@ -25,7 +26,7 @@ export interface InputUpsertContact {
   location_data?: string;
   status: string;
   remarks?: string;
-  congregation?: {
+  division?: {
     code: string;
   };
   updated: Stamp

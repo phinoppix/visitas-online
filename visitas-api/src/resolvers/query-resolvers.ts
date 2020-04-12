@@ -1,46 +1,48 @@
 import { QueryArgsWithCongCode, QueryArgsContactsPerTerritory } from '../schema/query-schema';
-import { congregationLoader } from '../data-loaders/congregation-loader';
-import { territoryLoader } from '../data-loaders/territory-loader';
+import { divisionLoader } from '../data-loaders/division-loader';
+import { territoryLoader } from '../data-loaders';
 import { contactLoader } from '../data-loaders/contact-loader';
 import { Territory, Contact } from '../schema/data-types';
 
 export const queryResolvers = {
   Query: {
-    congregation: (_: any, {congCode}: QueryArgsWithCongCode) =>
-      congregationLoader.get(congCode),
-    territoriesPerCong: (_: any, {congCode}: QueryArgsWithCongCode) =>
-      territoryLoader.getTerritoriesByCong(congCode),
-    contactsPerTerritory: (_: any, {congregationCode, territoryCode}: QueryArgsContactsPerTerritory) =>
-      contactLoader.getList(congregationCode, territoryCode)
+    division: async (_: any, {divisionCode}: QueryArgsWithCongCode) =>
+      await divisionLoader.get(divisionCode),
+    territoriesPerDivision: (_: any, {divisionCode}: QueryArgsWithCongCode) =>
+      territoryLoader.getTerritoriesByCong(divisionCode),
+    contactsPerTerritory: (_: any, {divisionCode, territoryCode}: QueryArgsContactsPerTerritory) =>
+      contactLoader.getList(divisionCode, territoryCode)
   },
+
   IStampableEntity: {
     __resolveType: (root: any) => {
       if (root.name && root.status) return 'Contact';
-      if (root.code && root.congregation) return 'Territory';
-      if (root.name) return 'Congregation';
+      if (root.code && root.division) return 'Territory';
+      if (root.name) return 'Division';
 
       return null;
     }
   },
-  Congregation: {
+  Division: {
     aggregates: () => ({
-      countTerritories:  (_: any, {congCode}: QueryArgsWithCongCode) => {
-        console.log('Congregation resolver', congCode);
+      countTerritories:  (_: any, {divisionCode}: QueryArgsWithCongCode) => {
+        console.log('Division resolver', divisionCode);
         return 14;
       }
     })
   },
+
   Territory: {
-    congregation: (root: Territory) => congregationLoader.get(root.congregation!.code),
+    division: (root: Territory) => divisionLoader.get(root.division!.code),
     aggregates: () => ({
-      countContacts:  (_: any, {congCode}: QueryArgsWithCongCode) => {
-        console.log('Territory.aggregates resolver', congCode);
+      countContacts:  (_: any, {divisionCode}: QueryArgsWithCongCode) => {
+        console.log('Territory.aggregates resolver', divisionCode);
         return 15;
       }
     })
   },
   Contact: {
-    territory: (root: Contact) => territoryLoader.get(root.territory!.code),
-    congregation: (root: Contact) => congregationLoader.get(root.congregation!.code)
+    territory: (root: Contact) => territoryLoader.get('CA-HEARTLAKE', root.territory!.code),
+    division: (root: Contact) => divisionLoader.get(root.division!.code)
   },
 };

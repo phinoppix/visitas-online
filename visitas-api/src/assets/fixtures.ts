@@ -1,7 +1,8 @@
-import { Congregation, Territory, Contact } from '../schema/data-types';
+import { Division, Territory, Contact } from '../schema/data-types';
 
-const congs: Congregation[] = [
+const divisions: Division[] = [
   {
+    id: 0,
     code: 'CA-HEARTLAKE',
     name: 'Heartlake Tagalog',
   }
@@ -9,13 +10,15 @@ const congs: Congregation[] = [
 
 const territories: Territory[] = [
   {
+    id: 1001,
     code: '1001',
     name: 'Sandalwood-Mayfield-Kennedy-MainSt',
     boundaries: [{latitude: 1.1, longitude: 0.18273}, {latitude: 1.2817721, longitude: 0.8739011233}],
-    congregation: congs[0],
+    division: divisions[0],
     valid: true
   },
   {
+    id: 1002,
     code: '1002',
     name: 'Mississauga-Mayfield-McLaughlin-Wanless',
     boundaries: [{latitude: 1.1, longitude: 0.18273}, {latitude: 1.2817721, longitude: 0.8739011233}],
@@ -23,7 +26,7 @@ const territories: Territory[] = [
       by: 'aristiru',
       date: new Date()
     },
-    congregation: congs[0],
+    division: divisions[0],
     valid: true
   }
 ];
@@ -34,12 +37,12 @@ const contacts: Contact[] = [
     status: 'new',
     full_address: '89 Kenpark Avenue',
     territory: territories[0],
-    congregation: congs[0]
+    division: divisions[0]
   }
 ];
 
 export default {
-  congs,
+  divisions,
   territories,
   contacts
 };
