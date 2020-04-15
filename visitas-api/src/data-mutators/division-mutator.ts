@@ -5,7 +5,7 @@ import { InputAddDivision, InputUpsertTerritory } from '../schema/mutation-types
 export const divisionMutator = {
   add: (division: InputAddDivision): Division => {
     const div = {
-      id: 0,
+      id: '',
       name: division.name,
       code: division.code
     };

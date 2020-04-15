@@ -26,7 +26,7 @@ export const mutationSchema = gql`
   }
   
   input InputUpsertTerritory {
-    id: Int
+    id: String
     code: String
     name: String
     boundaries: [InputGeoCoordinates]

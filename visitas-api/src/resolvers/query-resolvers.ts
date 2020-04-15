@@ -42,7 +42,7 @@ export const queryResolvers = {
     })
   },
   Contact: {
-    territory: (root: Contact) => territoryLoader.get('CA-HEARTLAKE', root.territory!.code),
+    territory: (root: Contact) => territoryLoader.get('CA-HEARTLAKE', root.territory!.code!),
     division: (root: Contact) => divisionLoader.get(root.division!.code)
   },
 };

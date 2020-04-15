@@ -2,11 +2,18 @@ import { ApolloServer } from 'apollo-server';
 import { typeDefs } from './schema';
 import { resolvers } from './resolvers';
 import { printAppVars } from './utils/info';
+import { IServerContext } from './IServerContext';
 
 const server = new ApolloServer({ 
   typeDefs,
   resolvers,
-  debug: true
+  debug: true,
+  context: ({ req }) => {
+    // TODO: Pull the user's identity and claims via {req.headers} var
+    return {
+      divisionCode: 'CA-ON-BR-HEARTLAKE-TGL'
+    } as IServerContext;
+  }
  });
 
 server.listen({

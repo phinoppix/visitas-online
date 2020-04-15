@@ -9,7 +9,7 @@ export const contactMutator = {
       full_address: contact.full_address,
       location_data: contact.location_data,
       division: {
-        id: 0,
+        id: '',
         code: contact.division?.code!
       },
       remarks: contact.remarks,

@@ -13,7 +13,7 @@ export interface InputAddDivision {
 }
 
 export interface InputUpsertTerritory {
-  id: number;
+  id: string;
   code: string;
   name: string;
   boundaries: GeoCoordinates[]
@@ -21,6 +21,7 @@ export interface InputUpsertTerritory {
 }
 
 export interface InputUpsertContact {
+  id: string;
   name: string;
   full_address?: string;
   location_data?: string;

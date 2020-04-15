@@ -1,37 +1,64 @@
-import { Pool, PoolClient } from 'pg';
-import { Territory, GeoCoordinates } from '../schema/data-types';
-// const pool = new Pool();
+import { TYPES } from 'tedious';
 
-export function upsertTerritory(territory: Territory) {
-  // return pool.connect()
-  //   .then(client => client.query(`
-  //   INSERT INTO territory VALUES($1, $2, $3, $4, ROW($5, $6), $7)
-  //   ON CONFLICT(id)
-  //   DO UPDATE SET(code, name, updated) = (
-  //     excluded.code,
-  //     excluded.name
-  //     ROW($5, $6)
-  //   ) RETURNING *;`, [
-  //     territory.id,
-  //     territory.code,
-  //     territory.name,
-  //     null,
-  //     territory.created?.by,
-  //     territory.created?.date,
-  //     null
-  //   ]));
+import { Territory, GeoCoordinates } from '../schema/data-types';
+import { SqlCommand } from '../utils/sqlClient';
+import { rowDataToKeyValue } from '../utils/misc';
+import { CommandType } from '../utils/sqlClient/types';
+import { createConnection } from '../data-mutators/common';
+
+export async function upsertTerritory(territory: Territory): Promise<Territory | undefined> {
+  const con = await createConnection();
+
+  const cmd = new SqlCommand({
+    connection: con,
+    commandText: 'vis.usp_UpsertTerritory',
+    commandType: CommandType.StoredProcedure,
+    parameters: [{
+      name: 'division_id',
+      type: TYPES.UniqueIdentifier,
+      value: territory.division.id
+    }, {
+      name: 'territory_id',
+      type: TYPES.UniqueIdentifier,
+      value: territory.id
+    }, {
+      name: 'code',
+      value: territory.code
+    }, {
+      name: 'name',
+      value: territory.name
+    }]
+  });
+
+  try {
+    const rows = await cmd.executeReader(true);
+    return rows.length > 0 ? rows.map(rowDataToKeyValue)[0] as Territory : undefined;
+  } catch (e) {
+    console.error(e);
+    throw e;
+  }
 }
 
-export function modifyTerritoryBoundaries(territoryCode: string, boundaries: GeoCoordinates[]) {
-  // if (boundaries.length < 3) {
-  //   throw "Parameter [boundaries] must have at least 3 items.";
-  // }
-  //
-  // const qryPoints = boundaries.map(b => `ST_GeomFromText('POINT(${b.latitude} ${b.longitude})', 4326)`);
-  // return pool.connect()
-  //   .then(client => client.query(`
-  //   UPDATE territory SET (boundaries = ARRAY[${qryPoints.join(',')}])
-  //   WHERE code=$1
-  //   RETURNING *;
-  //   `, [ territoryCode ]));
+export async function removeTerritory(divisionCode: string, territoryCode: string) {
+  const con = await createConnection();
+
+  const cmd = new SqlCommand({
+    connection: con,
+    commandText: 'vis.uspRemoveTerritory',
+    commandType: CommandType.StoredProcedure,
+    parameters: [{
+      name: 'divisionCode',
+      value: divisionCode
+    }, {
+      name: 'territoryCode',
+      value: territoryCode
+    }]
+  });
+
+  try {
+    await cmd.executeNonQuery();
+  } catch(e) {
+    console.error(e);
+    throw e;
+  }
 }

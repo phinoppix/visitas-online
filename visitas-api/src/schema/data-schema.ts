@@ -21,6 +21,7 @@ export const dataSchema = gql`
   }
   
   type Division implements IStampableEntity {
+    id: String!
     code: String!
     name: String
     territories: [Territory]
@@ -31,6 +32,7 @@ export const dataSchema = gql`
   }
   
   type Contact implements IStampableEntity {
+    id: String!
     name: String!
     full_address: String
     location_data: String
@@ -64,6 +66,7 @@ export const dataSchema = gql`
   }
   
   type Territory implements IStampableEntity {
+    id: String!
     code: String!
     name: String
     boundaries: [GeoCoordinates]
