@@ -1,0 +1,124 @@
+{
+	"info": {
+		"_postman_id": "dd7bfc8b-44ff-46cf-a833-0ce66961edd1",
+		"name": "visitas-dev",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "queries",
+			"item": [
+				{
+					"name": "division",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query {\n    division(id: \"{{division_id}}\") {\n        id\n        code\n        name\n    }\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4001",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4001"
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "territoriesPerDivision",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query {\n    territoriesPerDivision {\n        id\n        code\n        name\n    }\n} ",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4001",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4001"
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "mutations",
+			"item": [
+				{
+					"name": "upsertTerritory",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "ab09b831-7ab6-4019-87f3-d956af024d74",
+								"exec": [
+									"var response = JSON.parse(responseBody);",
+									"pm.environment.set(\"new_territory_id\", response.data.upsertTerritory.id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation UpsertTerritory($territory: InputUpsertTerritory) {\n    upsertTerritory(territory: $territory) {\n        id\n        code\n        name\n    }\n}",
+								"variables": "{\n\t\"territory\": {\n\t\t\"code\": \"1012\",\n\t\t\"name\": \"Test 1012\"\n\t}\n}"
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4001",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4001"
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "removeTerritory",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation {\n    removeTerritory(territoryId: \"{{new_territory_id}}\") {\n        status\n        error\n    }\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4001",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4001"
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
