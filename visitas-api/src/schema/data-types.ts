@@ -26,11 +26,17 @@ export interface Division extends IStampableEntity {
 export interface Contact extends IStampableEntity {
   name: string;
   full_address?: string;
+  contact_info?: ContactInfo;
   location_data?: string;
   status: string;
   remarks?: string;
   territory?: Territory;
   division?: Division;
+}
+
+export interface ContactInfo {
+  phoneNumber?: string;
+  email?: string;
 }
 
 export interface CheckoutEntry extends IStampableEntity {

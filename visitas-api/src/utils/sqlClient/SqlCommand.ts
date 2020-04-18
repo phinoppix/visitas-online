@@ -1,4 +1,5 @@
 import { Request, ColumnValue, ColumnMetaData, TediousType, TYPES } from 'tedious';
+import { empty } from 'ramda';
 
 import SqlConnection from './SqlConnection';
 import SqlParameter, { ParameterDirection } from './SqlParameter';
@@ -68,7 +69,7 @@ export default class SqlCommand {
           more,
           rows,
         });
-        if (rows.length > 0) {
+        if (more) {
           buffer.push(rows);
         }
       });
@@ -95,12 +96,17 @@ export default class SqlCommand {
           buffer,
           firstDatasetOnly
         });
-        res(firstDatasetOnly ? buffer[0] : buffer);
+        const datasets = buffer.filter(rows => rows.length > 0);
+        if (empty(datasets))
+          res(firstDatasetOnly ? datasets[0] : datasets);
+        else
+          res(buffer[0]);
       });
 
       this.setupParameters(request);
 
-      console.log('commandType=', {
+      console.log('SqlCommand.executeReader', {
+        request,
         commandType: this.commandType,
         parameters: this.parameters
       });
@@ -161,9 +167,9 @@ export default class SqlCommand {
 
       this.setupParameters(request);
 
-      console.log('commandType=', {
-        commandType: this.commandType,
-        parameters: this.parameters
+      console.log('SqlCommand.executeNonQuery', {
+        request,
+        commandType: this.commandType
       });
       this.executeRequest(request);
     });

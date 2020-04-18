@@ -1,37 +1,42 @@
 <script>
-  import { Link, navigate } from "svelte-routing";
-  import { getClient, query } from "svelte-apollo";
+  import {Link, navigate} from "svelte-routing";
+  import {getClient, query} from "svelte-apollo";
 
   import FrameBox from "../design-system/FrameBox.svelte";
   import NumberSelector from "./NumberSelector.svelte";
   import TerritoryList from "./TerritoryList.svelte";
-  import { QUERY_GET_TERRITORIES } from './queries.js';
+  import {QUERY_GET_TERRITORIES} from './queries.js';
 
   const createTerritory = () =>
-    navigate(`/territories/add?fr=${encodeURIComponent("/territories")}`);
+      navigate(`/territories/add?fr=${encodeURIComponent("/territories")}`);
+
+  const shareList = () => console.log('shareList command');
+
+  const printList = () => console.log('shareList command');
+
+  const editTerritory = (event) => console.log('editTerritory', event);
 
   const OPTIONS_MONTHS = [
-    { key: "all", value: "Any" },
-    { key: "3" },
-    { key: "6" },
-    { key: "9" },
-    { key: "10+", value: "10 or more" }
+    {key: "all", value: "Any"},
+    {key: "3"},
+    {key: "6"},
+    {key: "9"},
+    {key: "10+", value: "10 or more"}
   ];
   const OPTIONS_ADDRESSCOUNT = [
-    { key: "all", value: "All addresses" },
-    { key: "10" },
-    { key: "30" },
-    { key: "50" },
-    { key: "70+", value: "70 or more" }
+    {key: "all", value: "All addresses"},
+    {key: "10"},
+    {key: "30"},
+    {key: "50"},
+    {key: "70+", value: "70 or more"}
   ];
 
   const client = getClient();
   const territories = query(client, {
-    query: QUERY_GET_TERRITORIES,
-    variables: {
-      divisionCode: 'CA-HEARTLAKE'
-    }
+    query: QUERY_GET_TERRITORIES
   });
+
+  $: territories.refetch();
 </script>
 
 <style>
@@ -80,14 +85,14 @@
   </section>
   <div>
     <button on:click={createTerritory}>New territory</button>
-    <button title="Email function only">Share</button>
-    <button>Print</button>
+    <button on:click={shareList} title="Email function only">Share</button>
+    <button on:click={printList}>Print</button>
   </div>
   <FrameBox title="Territories">
   {#await $territories}
     ...Loading
   {:then result}
-    <TerritoryList territories={result.data.territoriesPerDivision}/>
+    <TerritoryList territories={result.data.territoriesPerDivision} on:message={editTerritory}/>
   {/await}
   </FrameBox>
 </main>

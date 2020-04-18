@@ -11,8 +11,8 @@ export interface QueryArgsWithCongCode {
 
 export const querySchema = gql`
   type Query {
-    division(divisionCode: String): Division
-    territoriesPerDivision(divisionCode: String): [Territory]
-    contactsPerTerritory(divisionCode: String, territoryCode: String): [Contact]
+    division(id: String): Division
+    territoriesPerDivision: [Territory]
+    contactsPerTerritory(territoryId: String): [Contact]
   }
 `;

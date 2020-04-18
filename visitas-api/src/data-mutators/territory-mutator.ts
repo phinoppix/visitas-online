@@ -4,7 +4,7 @@ import * as svc from '../services/territory';
 import { voidMutationHandler } from './common';
 
 export const territoryMutator = {
-  upsertTerritory: async (divisionCode: string, territory: InputUpsertTerritory): Promise<Territory | undefined> => {
+  upsertTerritory: async (divisionId: string, territory: InputUpsertTerritory): Promise<Territory | undefined> => {
     console.log('upsertTerritory', territory);
     let target: Territory | undefined = {
       id: territory.id,
@@ -12,13 +12,13 @@ export const territoryMutator = {
       name: territory.name,
       boundaries: territory.boundaries,
       created: territory.updated,
-      division: {id: '1D0F433E-F36B-1410-8B80-00A4D18A1143', code: ''},
+      division: {id: divisionId, code: ''},
       valid: true
     };
     return await svc.upsertTerritory(target);
   },
-  removeTerritory: async (divisionCode: string, territoryCode: string): Promise<MutationResponse> =>
+  removeTerritory: async (divisionId: string, territoryId: string): Promise<MutationResponse> =>
     await voidMutationHandler(async () => {
-      await svc.removeTerritory(divisionCode, territoryCode);
+      await svc.removeTerritory(divisionId, territoryId);
     })
 }

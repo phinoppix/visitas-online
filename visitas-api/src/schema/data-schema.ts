@@ -35,6 +35,7 @@ export const dataSchema = gql`
     id: String!
     name: String!
     full_address: String
+    contact_info: ContactInfo
     location_data: String
     status: String!
     remarks: String
@@ -43,6 +44,11 @@ export const dataSchema = gql`
     
     created: Stamp
     updated: Stamp
+  }
+  
+  type ContactInfo {
+    phoneNumber: String
+    email: String
   }
   
   type CheckoutEntry implements IStampableEntity {

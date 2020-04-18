@@ -48,7 +48,7 @@ export const mutationSchema = gql`
     
     # Territory mutations
     upsertTerritory(territory: InputUpsertTerritory): Territory
-    removeTerritory(territoryCode: String): MutationResponse
+    removeTerritory(territoryId: String): MutationResponse
     voidTerritory(territoryCode: String): MutationResponse
     checkoutTerritory(territoryCode: String, publisher: InputStamp): Territory
     setTerritoryBounds(territoryCode: String, boundaries: [InputGeoCoordinates]): Territory

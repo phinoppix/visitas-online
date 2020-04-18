@@ -1,8 +1,9 @@
 import { gql } from 'apollo-boost';
 
 export const QUERY_GET_TERRITORIES = gql`
-query GetTerritories($divisionCode: String!) {
-  territoriesPerDivision(divisionCode: $divisionCode) {
+query {
+  territoriesPerDivision {
+    id
     code
     name
   }
@@ -12,6 +13,7 @@ query GetTerritories($divisionCode: String!) {
 export const QUERY_UPSERT_TERRITORY = gql`
 mutation UpsertTerritory($territory: InputUpsertTerritory!) {
   upsertTerritory(territory: $territory) {
+    id
     code
     name
     boundaries {

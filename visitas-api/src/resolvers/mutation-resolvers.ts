@@ -17,12 +17,12 @@ export const mutationResolvers = {
     // Territory mutations
     upsertTerritory: async (_: any, args: { territory: InputUpsertTerritory }, context: IServerContext) =>
       await territoryMutator.upsertTerritory(
-        context.divisionCode,
+        context.divisionId,
         args.territory),
-    removeTerritory: async (_: any, args: { territoryCode: string }, context: IServerContext) =>
+    removeTerritory: async (_: any, args: { territoryId: string }, context: IServerContext) =>
       await territoryMutator.removeTerritory(
-        context.divisionCode,
-        args.territoryCode),
+        context.divisionId,
+        args.territoryId),
     voidTerritory: (_: any, args: { territoryCode: string }): MutationResponse => ({
       status: "KO",
       error: "Not yet implemented."
