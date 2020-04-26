@@ -24,13 +24,20 @@ export interface Division extends IStampableEntity {
 }
 
 export interface Contact extends IStampableEntity {
+	id?: string;
   name: string;
   full_address?: string;
+  contact_info?: ContactInfo;
   location_data?: string;
-  status: string;
   remarks?: string;
   territory?: Territory;
   division?: Division;
+  tags?: string[];
+}
+
+export interface ContactInfo {
+  phoneNumber?: string;
+  email?: string;
 }
 
 export interface CheckoutEntry extends IStampableEntity {
@@ -57,4 +64,8 @@ export interface Territory extends IStampableEntity {
     ends: string;
   };
   valid: boolean;
+}
+
+export interface Tag {
+	tag: string;
 }

@@ -1,22 +1,27 @@
-import { InputUpsertContact } from '../schema/mutation-types';
-import fixtures from '../assets/fixtures';
+import { InputUpsertContact, MutationResponse } from '../schema/mutation-types';
 import { Contact } from '../schema/data-types';
+import * as svc  from '../services/contact';
+import {omit} from 'ramda';
+import { voidMutationHandler } from './common';
+
+const OMIT_COLS = ['phoneNumber', 'email'];
 
 export const contactMutator = {
-  upsertContact: (contact: InputUpsertContact) => {
-    const newContact: Contact = {
-      name: contact.name,
-      full_address: contact.full_address,
-      location_data: contact.location_data,
-      division: {
-        id: '',
-        code: contact.division?.code!
-      },
-      remarks: contact.remarks,
-      status: contact.status,
-      created: contact.updated // created, only if contact doesn't exist yet
-    };
-    fixtures.contacts.push(newContact);
-    return newContact;
-  }
+	upsertContact: async (divisionId: string, contact: InputUpsertContact): Promise<Contact | undefined> => {
+		console.log('contact-mutator/contactMutator@upsertContact', {
+			divisionId,
+			inputContact: contact
+		});
+		const result = await svc.upsertContact(divisionId, contact);
+		const updatedContact = {
+			...result,
+			contact_info: {
+				phoneNumber: result!.phoneNumber,
+				email: result!.email
+			}
+		};
+		return omit(OMIT_COLS, updatedContact) as Contact;
+	},
+	removeContact: async (divisionId: string, contactId: string): Promise<MutationResponse> =>
+		await voidMutationHandler(async () => await svc.removeContact(divisionId, contactId))
 };

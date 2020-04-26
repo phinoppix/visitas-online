@@ -11,7 +11,7 @@ const server = new ApolloServer({
   context: ({ req }) => {
     // TODO: Pull the user's identity and claims via {req.headers} var
     return {
-      divisionCode: 'CA-ON-BR-HEARTLAKE-TGL'
+      divisionId: process.env.DEBUG_DIVISION_ID
     } as IServerContext;
   }
  });

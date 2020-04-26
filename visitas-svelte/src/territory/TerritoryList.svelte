@@ -1,4 +1,8 @@
 <script>
+  import { createEventDispatcher } from 'svelte';
+
+  const dispatch = createEventDispatcher();
+
   import * as enums from './enums.js';
   export let territories = [];
   export let visibleColumns = enums.TERRITORY_TABLE_ALLCOLUMNS;
@@ -8,6 +12,7 @@
   <thead>
     <tr>
       <th>Territory code</th>
+      <th>Name</th>
       <th>Addresses</th>
       <th>Checked out</th>
       <th>Checked out</th>
@@ -24,6 +29,7 @@
   {#each territories as t}
     <tr>
       <td>{t.code}</td>
+      <td>{t.name}</td>
       <td>{t.countContacts}</td>
       <td>{t.checkedOut1}</td>
       <td>{t.checkedOut2}</td>
@@ -32,7 +38,7 @@
       <td>{t.checkedOutBy}</td>
       {/if}
       {#if visibleColumns & enums.TERRITORY_TABLE_EDITOR}
-      <td><button>edit</button></td>
+      <td><button on:click="{() => dispatch('editTerritory', {id: t.id})}">edit</button></td>
       {/if}
     </tr>
   {/each}
@@ -42,6 +48,10 @@
 <style>
   table {
     width: 100%;
+  }
+  th {
+    text-align: left;
+    padding: 8px 16px;
   }
   td {
     padding: 0px 16px;

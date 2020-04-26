@@ -1,4 +1,4 @@
-import { GeoCoordinates, Stamp } from './data-types';
+import { GeoCoordinates, Stamp, Tag } from './data-types';
 
 export type MutationResolver<R, A, O> = (root: R, args: A) => O;
 
@@ -21,14 +21,12 @@ export interface InputUpsertTerritory {
 }
 
 export interface InputUpsertContact {
-  id: string;
+  id?: string;
   name: string;
   full_address?: string;
   location_data?: string;
-  status: string;
+  phoneNumber?: string;
+	email?: string;
   remarks?: string;
-  division?: {
-    code: string;
-  };
-  updated: Stamp
+  tags?: string[];
 }

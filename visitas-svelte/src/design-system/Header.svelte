@@ -1,7 +1,16 @@
+<script>
+  import {Link} from 'svelte-routing';
+</script>
 <header>
   <span>Visitas</span>
   <span class="spacer"></span>
-  <nav>25K addresses</nav>
+  <nav>
+    <ol>
+      <li><Link to="/">Home</Link></li>
+      <li><Link to="/territories">Territories</Link></li>
+      <li><Link to="/contacts">Contacts</Link></li>
+    </ol>
+  </nav>
   <button>signout</button>
 </header>
 
@@ -17,5 +26,19 @@
 
   header > span.spacer {
     flex: 1;
+  }
+
+  ol {
+    list-style: none;
+    display: flex;
+    flex-direction: row;
+    padding: 0;
+  }
+  ol > li {
+    padding: 12px;
+    cursor: pointer;
+  }
+  ol > li:hover {
+    color: #007bff;
   }
 </style>

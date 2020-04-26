@@ -1,26 +1,52 @@
 import { TYPES } from 'tedious';
 
-import { Territory, GeoCoordinates } from '../schema/data-types';
+import { Territory } from '../schema/data-types';
 import { SqlCommand } from '../utils/sqlClient';
 import { rowDataToKeyValue } from '../utils/misc';
 import { CommandType } from '../utils/sqlClient/types';
 import { createConnection } from '../data-mutators/common';
 
-export async function upsertTerritory(territory: Territory): Promise<Territory | undefined> {
-  const con = await createConnection();
+export async function getTerritory(divisionId: string, territoryId: string): Promise<Territory | undefined> {
+  // const con = await createConnection();
+  return undefined;
+}
 
+export async function getTerritoriesByDivision(divisionId: string): Promise<Territory[]> {
+  const con = await createConnection();
+  const cmd = new SqlCommand({
+    connection: con,
+    commandText: `
+    select t.* from vis.territory t
+    inner join vis.divisionTerritory dt on dt.division_id = @divisionId and dt.territory_id = t.id`,
+    parameters: [{name: 'divisionId', value: divisionId}]
+  });
+
+  try {
+    const rows = await cmd.executeReader(true);
+    console.log('getTerritoriesByDivision', rows);
+    return rows.map(rowDataToKeyValue) as Territory[];
+  } catch (e) {
+    console.error(e);
+    throw e;
+  }
+}
+
+export async function upsertTerritory(territory: Territory): Promise<Territory | undefined> {
+  console.log('upsertTerritory open SqlConnection ');
+  const con = await createConnection();
+  console.log('upsertTerritory setup SqlCommand ');
   const cmd = new SqlCommand({
     connection: con,
     commandText: 'vis.usp_UpsertTerritory',
     commandType: CommandType.StoredProcedure,
     parameters: [{
-      name: 'division_id',
+      name: 'divisionId',
       type: TYPES.UniqueIdentifier,
       value: territory.division.id
     }, {
-      name: 'territory_id',
+      name: 'territoryId',
       type: TYPES.UniqueIdentifier,
-      value: territory.id
+      value: territory.id === '' ? null : territory.id
     }, {
       name: 'code',
       value: territory.code
@@ -32,26 +58,28 @@ export async function upsertTerritory(territory: Territory): Promise<Territory |
 
   try {
     const rows = await cmd.executeReader(true);
-    return rows.length > 0 ? rows.map(rowDataToKeyValue)[0] as Territory : undefined;
+    const normalized = rows.map(rowDataToKeyValue);
+    console.log('services/territory@upsertTerritory done', normalized);
+    return normalized.length > 0 ? normalized[0] as Territory : undefined;
   } catch (e) {
     console.error(e);
     throw e;
   }
 }
 
-export async function removeTerritory(divisionCode: string, territoryCode: string) {
+export async function removeTerritory(divisionId: string, territoryId: string) {
   const con = await createConnection();
 
   const cmd = new SqlCommand({
     connection: con,
-    commandText: 'vis.uspRemoveTerritory',
+    commandText: 'vis.usp_RemoveTerritory',
     commandType: CommandType.StoredProcedure,
     parameters: [{
-      name: 'divisionCode',
-      value: divisionCode
+      name: 'divisionId',
+      value: divisionId
     }, {
-      name: 'territoryCode',
-      value: territoryCode
+      name: 'territoryId',
+      value: territoryId
     }]
   });
 
