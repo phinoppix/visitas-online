@@ -15,4 +15,4 @@ export const rowDataToKeyValue = (row: RowData) => Object.keys(row)
   .reduce((acc, cur) => ({
     ...acc,
     [cur]: row[cur].value
-  }), {});
+  }), {}) as {[key: string]: any};

@@ -1,9 +1,8 @@
-import { dataSchema } from './data-schema';
-import { querySchema } from './query-schema';
+import { queryOutputSchema, querySchema } from './query-schema';
 import { mutationSchema } from './mutation-schema';
 
 export const typeDefs = [
-  dataSchema,
+  queryOutputSchema,
   querySchema,
   mutationSchema
 ];

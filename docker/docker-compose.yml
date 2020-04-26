@@ -4,6 +4,9 @@ networks:
   visitas-net:
     driver: bridge
 
+volumes:
+  mssql-vol:
+
 services:
   # data:
   #   build: ../visitas.net/VisitasDataService
@@ -56,4 +59,4 @@ services:
     ports:
       - "1433:1433"
     volumes:
-      - ${HOME}/dockerized-databases/sqlserver/visitas:/var/lib/postgresql/data
+      - mssql-vol:/var/opt/mssql

@@ -12,6 +12,7 @@
   <thead>
     <tr>
       <th>Territory code</th>
+      <th>Name</th>
       <th>Addresses</th>
       <th>Checked out</th>
       <th>Checked out</th>
@@ -28,6 +29,7 @@
   {#each territories as t}
     <tr>
       <td>{t.code}</td>
+      <td>{t.name}</td>
       <td>{t.countContacts}</td>
       <td>{t.checkedOut1}</td>
       <td>{t.checkedOut2}</td>
@@ -46,6 +48,10 @@
 <style>
   table {
     width: 100%;
+  }
+  th {
+    text-align: left;
+    padding: 8px 16px;
   }
   td {
     padding: 0px 16px;

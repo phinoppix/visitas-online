@@ -1,42 +1,29 @@
 <script>
-  import {Link, navigate} from "svelte-routing";
-  import {getClient, query} from "svelte-apollo";
+  import {onMount} from 'svelte';
+  import {Router, Route, Link, navigate} from 'svelte-routing';
 
-  import FrameBox from "../design-system/FrameBox.svelte";
-  import NumberSelector from "./NumberSelector.svelte";
-  import TerritoryList from "./TerritoryList.svelte";
-  import {QUERY_GET_TERRITORIES} from './queries.js';
+  import TerritoryEditor from './TerritoryEditor.svelte';
+  import FrameBox from '../design-system/FrameBox.svelte';
+  import NumberSelector from './NumberSelector.svelte';
+  import TerritoryList from './TerritoryList.svelte';
+  import * as store from '../store';
+  import {OPTIONS_MONTHS, OPTIONS_ADDRESSCOUNT} from './filterOptions';
 
   const createTerritory = () =>
-      navigate(`/territories/add?fr=${encodeURIComponent("/territories")}`);
+    navigate(`/territories/add?fr=${encodeURIComponent('/territories')}`);
 
   const shareList = () => console.log('shareList command');
 
   const printList = () => console.log('shareList command');
 
-  const editTerritory = (event) => console.log('editTerritory', event);
+  const editTerritory = event =>
+    navigate(`/territories/edit/${encodeURIComponent(event.detail.id)}?fr=${encodeURIComponent('/territories')}`);
 
-  const OPTIONS_MONTHS = [
-    {key: "all", value: "Any"},
-    {key: "3"},
-    {key: "6"},
-    {key: "9"},
-    {key: "10+", value: "10 or more"}
-  ];
-  const OPTIONS_ADDRESSCOUNT = [
-    {key: "all", value: "All addresses"},
-    {key: "10"},
-    {key: "30"},
-    {key: "50"},
-    {key: "70+", value: "70 or more"}
-  ];
-
-  const client = getClient();
-  const territories = query(client, {
-    query: QUERY_GET_TERRITORIES
+  let territories = [];
+  onMount(() => {
+    const unsubscribe = store.territories$.subscribe(value => territories = value);
+    return () => unsubscribe();
   });
-
-  $: territories.refetch();
 </script>
 
 <style>
@@ -49,16 +36,20 @@
     flex-direction: row;
     justify-content: space-between;
   }
+
   section > :global(div:first-of-type),
   section > :global(div:nth-of-type(2)) {
     min-width: 260px;
   }
+
   section > :global(div:last-of-type) {
     flex: 1;
   }
+
   section > div {
     flex: 1;
   }
+
   section > div > input {
     width: 100%;
   }
@@ -71,14 +62,14 @@
   <section>
     <NumberSelector
       label="Months since last worked on"
-      ranges={OPTIONS_MONTHS} />
+      ranges={OPTIONS_MONTHS}/>
     <NumberSelector
       label="Filter by max addresses"
-      ranges={OPTIONS_ADDRESSCOUNT} />
+      ranges={OPTIONS_ADDRESSCOUNT}/>
     <div>
-      <input placeholder="Search a name or code" />
+      <input placeholder="Search a name or code"/>
       <label>
-        <input type="checkbox" />
+        <input type="checkbox"/>
         Include checked-out territories
       </label>
     </div>
@@ -89,10 +80,6 @@
     <button on:click={printList}>Print</button>
   </div>
   <FrameBox title="Territories">
-  {#await $territories}
-    ...Loading
-  {:then result}
-    <TerritoryList territories={result.data.territoriesPerDivision} on:message={editTerritory}/>
-  {/await}
+    <TerritoryList {territories} on:editTerritory={editTerritory}/>
   </FrameBox>
 </main>

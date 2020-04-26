@@ -6,4 +6,4 @@ export const territoryLoader = {
     await svc.getTerritory(divisionId, territoryId),
   getAllByDivision: async (divisionId: string): Promise<Territory[]> =>
     await svc.getTerritoriesByDivision(divisionId)
-}
+};

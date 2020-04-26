@@ -9,3 +9,7 @@ export interface RowData {
     metadata: any
   }
 }
+
+export interface DataRow {
+	[key: string]: any
+}

@@ -1,4 +1,3 @@
--- we don't know how to generate database visitas-002 (class Database) :(
 create table vis.contact
 (
   id           uniqueidentifier default newsequentialid() not null

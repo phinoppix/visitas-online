@@ -23,17 +23,20 @@ export const mutationResolvers = {
       await territoryMutator.removeTerritory(
         context.divisionId,
         args.territoryId),
-    voidTerritory: (_: any, args: { territoryCode: string }): MutationResponse => ({
-      status: "KO",
-      error: "Not yet implemented."
-    }),
-    checkoutTerritory: (_: any, args: { territoryCode: string, publisher: Stamp }) => null,
-    setTerritoryBounds: (_: any, args: { territoryCode: string, boundaries: [GeoCoordinates] }) => null,
+    // voidTerritory: (_: any, args: { territoryCode: string }): MutationResponse => ({
+    //   status: "KO",
+    //   error: "Not yet implemented."
+    // }),
+    // checkoutTerritory: (_: any, args: { territoryCode: string, publisher: Stamp }) => null,
+    // setTerritoryBounds: (_: any, args: { territoryCode: string, boundaries: [GeoCoordinates] }) => null,
 
     // Contact mutations
-    upsertContact: (_: any, args: {contact: InputUpsertContact}) => contactMutator.upsertContact(args.contact),
-    assignTerritoryForContact: (_: any, args: {contactId: string, territoryCode: string}) => null,
-    removeContactFromTerritory: (_: any, args: {contactId: string, territoryCode: string}) => null,
-    setStatusForContact: (_: any, args: {contactCode: string, status: string}) => null
+    upsertContact: async (_: any, args: {contact: InputUpsertContact}, context: IServerContext) =>
+			await contactMutator.upsertContact(context.divisionId, args.contact),
+		removeContact: async (_: any, args: {contactId: string}, context: IServerContext) =>
+			await contactMutator.removeContact(context.divisionId, args.contactId)
+    // removeContactFromTerritory: (_: any, args: {contactId: string, territoryCode: string}) => null,
+    // assignTerritoryForContact: (_: any, args: {contactId: string, territoryCode: string}) => null,
+    // setStatusForContact: (_: any, args: {contactCode: string, status: string}) => null
   }
 };

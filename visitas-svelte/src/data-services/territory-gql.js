@@ -47,8 +47,8 @@ mutation UpsertTerritory($territory: InputUpsertTerritory!) {
 `;
 
 export const QUERY_REMOVE_TERRITORY = gql`
-mutation RemoveTerritory($territoryCode: String) {
-  removeTerritory(territoryCode: $territoryCode) {
+mutation RemoveTerritory($territoryId: String) {
+	removeTerritory(territoryId: $territoryId) {
     status
     error
   }
