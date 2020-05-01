@@ -14,7 +14,8 @@ export const mutationSchema = gql`
 			# Contact mutations
 			upsertContact(contact: InputUpsertContact): Contact
 			removeContact(contactId: String): MutationResponse
-#			removeContactFromTerritory(contactId: String, territoryCode: String): Contact
+			contactAssignTerritory(contactId: String, territoryId: String): Contact
+			contactUnassignTerritory(contactId: String): Contact
 			#    assignTerritoryForContact(contactId: String, territoryCode: String): Contact
 			#    setStatusForContact(contactCode: String, status: String): MutationResponse
 	}
@@ -42,7 +43,7 @@ export const mutationSchema = gql`
     code: String
     name: String
   }
-  
+
   input InputUpsertTerritory {
     id: String
     code: String
@@ -50,11 +51,11 @@ export const mutationSchema = gql`
     boundaries: [InputGeoCoordinates]
     updated: InputStamp
   }
-	
+
 	input InputTags {
 		tag: String
 	}
-  
+
   input InputUpsertContact {
 		id: String
     name: String!

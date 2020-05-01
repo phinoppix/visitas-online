@@ -23,7 +23,6 @@
       <TerritoryEditor edit_id={params.id}/>
     </Route>
     <Route path="/territories" component={TerritoriesHome}/>
-
     <Route path="/contacts/add" component={ContactEditor} />
     <Route path="/contacts/edit/:id" let:params>
       <ContactEditor edit_id={params.id}/>

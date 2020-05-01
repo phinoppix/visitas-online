@@ -14,15 +14,18 @@ export const mutationResolvers = {
   Mutation: {
     addDivision: (_: any, args: { division: InputAddDivision }) => divisionMutator.add(args.division),
 
-    // Territory mutations
+		/** Territory mutations **/
+
     upsertTerritory: async (_: any, args: { territory: InputUpsertTerritory }, context: IServerContext) =>
       await territoryMutator.upsertTerritory(
         context.divisionId,
         args.territory),
+
     removeTerritory: async (_: any, args: { territoryId: string }, context: IServerContext) =>
       await territoryMutator.removeTerritory(
         context.divisionId,
         args.territoryId),
+
     // voidTerritory: (_: any, args: { territoryCode: string }): MutationResponse => ({
     //   status: "KO",
     //   error: "Not yet implemented."
@@ -30,11 +33,20 @@ export const mutationResolvers = {
     // checkoutTerritory: (_: any, args: { territoryCode: string, publisher: Stamp }) => null,
     // setTerritoryBounds: (_: any, args: { territoryCode: string, boundaries: [GeoCoordinates] }) => null,
 
-    // Contact mutations
+    /** Contact mutations **/
+
     upsertContact: async (_: any, args: {contact: InputUpsertContact}, context: IServerContext) =>
 			await contactMutator.upsertContact(context.divisionId, args.contact),
+
 		removeContact: async (_: any, args: {contactId: string}, context: IServerContext) =>
-			await contactMutator.removeContact(context.divisionId, args.contactId)
+			await contactMutator.removeContact(context.divisionId, args.contactId),
+
+		contactAssignTerritory: async (_: any, args: {contactId: string, territoryId: string}, context: IServerContext) =>
+			await contactMutator.contactAssignTerritory(context.divisionId, args.contactId, args.territoryId),
+
+		contactUnassignTerritory: async (_: any, args: {contactId: string}, context: IServerContext) =>
+			await contactMutator.contactUnassignTerritory(context.divisionId, args.contactId)
+
     // removeContactFromTerritory: (_: any, args: {contactId: string, territoryCode: string}) => null,
     // assignTerritoryForContact: (_: any, args: {contactId: string, territoryCode: string}) => null,
     // setStatusForContact: (_: any, args: {contactCode: string, status: string}) => null

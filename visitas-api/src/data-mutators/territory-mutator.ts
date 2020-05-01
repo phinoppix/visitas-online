@@ -2,10 +2,11 @@ import { InputUpsertTerritory, MutationResponse } from '../schema/mutation-types
 import { Territory } from '../schema/data-types';
 import * as svc from '../services/territory';
 import { voidMutationHandler } from './common';
+import { rowDataToColumnValuePair } from '../utils/misc';
 
 export const territoryMutator = {
 	upsertTerritory: async (divisionId: string, territory: InputUpsertTerritory): Promise<Territory | undefined> => {
-		let target: Territory | undefined = {
+		const target: Territory | undefined = {
 			id: territory.id,
 			code: territory.code,
 			name: territory.name,
@@ -15,13 +16,13 @@ export const territoryMutator = {
 			valid: true
 		};
 		const output = await svc.upsertTerritory(target);
-		return output ? {
-			...output,
+		const row = rowDataToColumnValuePair()(output) as Territory;
+		return row && {
+			...row,
 			division: {
-				id: divisionId,
-				code: ''
-			},
-		} : undefined;
+				id: divisionId
+			}
+		};
 	},
 	removeTerritory: async (divisionId: string, territoryId: string): Promise<MutationResponse> =>
 		await voidMutationHandler(async () => await svc.removeTerritory(divisionId, territoryId))

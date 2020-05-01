@@ -15,7 +15,7 @@ export interface GeoCoordinates {
 
 export interface Division extends IStampableEntity {
   id: string;
-  code: string;
+  code?: string;
   name?: string;
   territories?: Territory[];
   aggregates?: {
@@ -50,8 +50,8 @@ export interface Territory extends IStampableEntity {
   id: string;
   code?: string;
   name?: string;
-  boundaries: GeoCoordinates[];
-  division: Division;
+  boundaries?: GeoCoordinates[];
+  division?: Division;
   contacts?: Contact[];
   checkouts?: CheckoutEntry[];
   aggregates?: {
@@ -63,7 +63,7 @@ export interface Territory extends IStampableEntity {
     starts: string;
     ends: string;
   };
-  valid: boolean;
+  valid?: boolean;
 }
 
 export interface Tag {

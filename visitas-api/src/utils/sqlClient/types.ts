@@ -10,6 +10,6 @@ export interface RowData {
   }
 }
 
-export interface DataRow {
+export interface ColumnValuePair {
 	[key: string]: any
 }

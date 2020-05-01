@@ -1,17 +1,17 @@
 import { TYPES } from 'tedious';
 
 import { Territory } from '../schema/data-types';
-import { SqlCommand } from '../utils/sqlClient';
-import { rowDataToKeyValue } from '../utils/misc';
-import { CommandType } from '../utils/sqlClient/types';
-import { createConnection } from '../data-mutators/common';
+import { RowData, SqlCommand } from '../utils/sqlClient';
+import { CommandType } from '../utils/sqlClient';
+import { createConnection } from './common';
+import { head } from 'ramda';
 
-export async function getTerritory(divisionId: string, territoryId: string): Promise<Territory | undefined> {
+export async function getTerritory(divisionId: string, territoryId: string | undefined): Promise<Territory | undefined> {
   // const con = await createConnection();
   return undefined;
 }
 
-export async function getTerritoriesByDivision(divisionId: string): Promise<Territory[]> {
+export async function getTerritoriesByDivision(divisionId: string): Promise<RowData[]> {
   const con = await createConnection();
   const cmd = new SqlCommand({
     connection: con,
@@ -22,19 +22,15 @@ export async function getTerritoriesByDivision(divisionId: string): Promise<Terr
   });
 
   try {
-    const rows = await cmd.executeReader(true);
-    console.log('getTerritoriesByDivision', rows);
-    return rows.map(rowDataToKeyValue) as Territory[];
+    return await cmd.executeReader(true);
   } catch (e) {
     console.error(e);
     throw e;
   }
 }
 
-export async function upsertTerritory(territory: Territory): Promise<Territory | undefined> {
-  console.log('upsertTerritory open SqlConnection ');
+export async function upsertTerritory(territory: Territory): Promise<RowData | undefined> {
   const con = await createConnection();
-  console.log('upsertTerritory setup SqlCommand ');
   const cmd = new SqlCommand({
     connection: con,
     commandText: 'vis.usp_UpsertTerritory',
@@ -42,7 +38,7 @@ export async function upsertTerritory(territory: Territory): Promise<Territory |
     parameters: [{
       name: 'divisionId',
       type: TYPES.UniqueIdentifier,
-      value: territory.division.id
+      value: territory.division!.id
     }, {
       name: 'territoryId',
       type: TYPES.UniqueIdentifier,
@@ -58,9 +54,7 @@ export async function upsertTerritory(territory: Territory): Promise<Territory |
 
   try {
     const rows = await cmd.executeReader(true);
-    const normalized = rows.map(rowDataToKeyValue);
-    console.log('services/territory@upsertTerritory done', normalized);
-    return normalized.length > 0 ? normalized[0] as Territory : undefined;
+    return head(rows);
   } catch (e) {
     console.error(e);
     throw e;

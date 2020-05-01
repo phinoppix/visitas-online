@@ -1,6 +1,6 @@
 import { QueryArgsWithCongCode, QueryArgsContactsPerTerritory } from '../schema/query-schema';
 import { divisionLoader } from '../data-loaders/division-loader';
-import { territoryLoader } from '../data-loaders/territory-loader';
+import * as territoryLoader from '../data-loaders/territory-loader';
 import { contactLoader } from '../data-loaders/contact-loader';
 import { Territory, Contact } from '../schema/data-types';
 import { IServerContext } from '../IServerContext';
@@ -12,8 +12,8 @@ export const queryResolvers = {
       await divisionLoader.get(id),
     territoriesPerDivision: (_1: any, _2: any, context: IServerContext) =>
       territoryLoader.getAllByDivision(context.divisionId),
-		contactsPerDivision: (_: any, _2: any, context: IServerContext) =>
-      contactLoader.getContactsPerDivision(context.divisionId),
+		contactsPerDivision: async (_: any, _2: any, context: IServerContext) =>
+      await contactLoader.getContactsPerDivision(context.divisionId),
 		tags: (_1: any, _2: any, context: IServerContext) =>
 			tagsLoader.get(context.divisionId)
   },
@@ -45,8 +45,13 @@ export const queryResolvers = {
       }
     })
   },
+
   Contact: {
-    territory: (root: Contact, _: any, context: IServerContext) => territoryLoader.get(context.divisionId, root.territory!.code!),
-    division: (root: Contact) => divisionLoader.get(root.division!.code)
+    territory: (root: Contact, _: any, context: IServerContext) =>
+			root.territory || territoryLoader.get(context.divisionId, root.territory && root.territory!.id!),
+    division: (root: Contact) => {
+    	console.log('queryResolver.root@Contact.division', {root});
+    	return root.division || divisionLoader.get(root.division!.code);
+		}
   },
 };

@@ -50,10 +50,6 @@ export default class SqlCommand {
 				}
 			});
 
-			request.on('row', (columns: ColumnValue[]) => {
-				console.log('Request.row', { columns });
-			})
-
 			request.on('done', (rowCount: number, more: boolean, rows: any[]) => {
 				console.log('Request.done', {
 					rowCount,
@@ -106,12 +102,6 @@ export default class SqlCommand {
 			});
 
 			this.setupParameters(request);
-
-			console.log('SqlCommand.executeReader', {
-				request,
-				commandType: this.commandType,
-				parameters: this.parameters
-			});
 			this.executeRequest(request);
 		});
 	}
@@ -123,10 +113,6 @@ export default class SqlCommand {
 					rej(err);
 				}
 			});
-
-			request.on('row', (columns: ColumnValue[]) => {
-				console.log('Request.row', { columns });
-			})
 
 			request.on('done', (rowCount: number, more: boolean, rows: any[]) => {
 				console.log('Request.done', {
@@ -168,11 +154,6 @@ export default class SqlCommand {
 			});
 
 			this.setupParameters(request);
-
-			console.log('SqlCommand.executeNonQuery', {
-				request,
-				commandType: this.commandType
-			});
 			this.executeRequest(request);
 		});
 	}

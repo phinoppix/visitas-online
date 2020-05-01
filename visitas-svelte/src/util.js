@@ -32,3 +32,8 @@ export function removeElement(list, element) {
 	}
 	return tmp;
 }
+
+export function removeElementByPredicate(list, predicate) {
+	const idx = list.findIndex(predicate);
+	return [].concat(...list.slice(0, idx), ...list.slice(idx + 1))
+}

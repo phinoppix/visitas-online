@@ -3,17 +3,12 @@ import {get} from 'svelte/store';
 
 import * as store from '../store';
 import {upsertObject} from '../util';
-
-import {
-	QUERY_CONTACTS,
-	QUERY_UPSERT_CONTACT,
-	QUERY_REMOVE_CONTACT
-} from './contact-gql';
+import * as queries from './contact-gql';
 
 export async function upsertContact(contact) {
 	const client = getClient();
 	const updatedObj = await mutate(client, {
-		mutation: QUERY_UPSERT_CONTACT,
+		mutation: queries.MUTATION_UPSERT_CONTACT,
 		variables: {contact}
 	});
 	store.contacts$.update(list => upsertObject(list, updatedObj.data.upsertContact));
@@ -23,7 +18,7 @@ export async function upsertContact(contact) {
 export async function getContacts() {
 	const client = getClient();
 	const qry = await query(client, {
-		query: QUERY_CONTACTS
+		query: queries.QUERY_CONTACTS
 	});
 	return qry.result();
 }
@@ -31,17 +26,35 @@ export async function getContacts() {
 export async function removeContact(contactId) {
 	const client = getClient();
 	const response = await mutate(client, {
-		mutation: QUERY_REMOVE_CONTACT,
+		mutation: queries.MUTATION_REMOVE_CONTACT,
 		variables: {contactId}
 	});
 	const responseData = response.data.removeContact;
 	if (responseData.error === 'KO') {
 		throw responseData.message;
 	}
-	store.contacts$.update(list => {
-		const idx = list.findIndex(t => t.id === contactId);
-		return [].concat(...list.slice(0, idx), ...list.slice(idx + 1))
+	store.contacts$.update(list => removeElementByPredicate(list, t => t.id === contactId));
+}
+
+export async function assignTerritory(contactId, territoryId) {
+	const client = getClient();
+	const response = await mutate(client, {
+		mutation: queries.MUTATION_CONTACT_ASSIGN_TERRITORY,
+		variables: {
+			contactId,
+			territoryId
+		}
 	});
+	store.contacts$.update(list => upsertObject(list, response.data.contactAssignTerritory));
+}
+
+export async function unassignTerritory(contactId, territoryId) {
+	const client = getClient();
+	const response = await mutate(client, {
+		mutation: queries.MUTATION_CONTACT_UNASSIGN_TERRITORY,
+		variables: {contactId}
+	});
+	store.contacts$.update(list => upsertObject(list, response.data.contactUnassignTerritory));
 }
 
 export async function rehydrateContacts(forceHydrate) {

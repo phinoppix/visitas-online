@@ -1,6 +1,6 @@
 import { SqlCommand } from '../utils/sqlClient';
-import { createConnection } from '../data-mutators/common';
-import { RowData } from '../utils/sqlClient/types';
+import { RowData } from '../utils/sqlClient';
+import { createConnection } from './common';
 
 export async function getTags(divisionId: string): Promise<RowData[]> {
 	const con = await createConnection();

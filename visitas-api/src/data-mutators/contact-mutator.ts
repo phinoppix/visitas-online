@@ -1,27 +1,30 @@
 import { InputUpsertContact, MutationResponse } from '../schema/mutation-types';
 import { Contact } from '../schema/data-types';
-import * as svc  from '../services/contact';
-import {omit} from 'ramda';
+import * as svc from '../services/contact';
 import { voidMutationHandler } from './common';
-
-const OMIT_COLS = ['phoneNumber', 'email'];
+import { tagsColumnPredicate, toContact } from '../utils/contact-utils';
+import { rowDataToColumnValuePair } from '../utils/misc';
 
 export const contactMutator = {
+
 	upsertContact: async (divisionId: string, contact: InputUpsertContact): Promise<Contact | undefined> => {
-		console.log('contact-mutator/contactMutator@upsertContact', {
-			divisionId,
-			inputContact: contact
-		});
 		const result = await svc.upsertContact(divisionId, contact);
-		const updatedContact = {
-			...result,
-			contact_info: {
-				phoneNumber: result!.phoneNumber,
-				email: result!.email
-			}
-		};
-		return omit(OMIT_COLS, updatedContact) as Contact;
+		const row = rowDataToColumnValuePair(tagsColumnPredicate)(result);
+		return toContact(row, undefined, divisionId);
 	},
+
 	removeContact: async (divisionId: string, contactId: string): Promise<MutationResponse> =>
-		await voidMutationHandler(async () => await svc.removeContact(divisionId, contactId))
+		await voidMutationHandler(async () => await svc.removeContact(divisionId, contactId)),
+
+	contactAssignTerritory: async (divisionId: string, contactId: string, territoryId: string): Promise<Contact | undefined> => {
+		const result = await svc.contactAssignTerritory(divisionId, contactId, territoryId);
+		const row = rowDataToColumnValuePair(tagsColumnPredicate)(result);
+		return toContact(row, territoryId, divisionId)
+	},
+
+	contactUnassignTerritory: async (divisionId: string, contactId: string): Promise<Contact | undefined> => {
+		const result = await svc.contactUnassignTerritory(divisionId, contactId);
+		const row = rowDataToColumnValuePair(tagsColumnPredicate)(result);
+		return toContact(row, undefined, divisionId);
+	}
 };

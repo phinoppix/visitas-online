@@ -1,7 +1,7 @@
 <script>
 </script>
 
-<button {...$$restProps} on:click>
+<button type="button" {...$$restProps} on:click>
   <slot></slot>
 </button>
 

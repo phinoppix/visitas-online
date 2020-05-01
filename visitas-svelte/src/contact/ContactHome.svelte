@@ -2,9 +2,10 @@
   import {onMount} from 'svelte';
   import {Link, navigate} from 'svelte-routing';
 
-  import {getContacts, rehydrateContacts} from '../data-services/contact';
-  import * as store from '../store';
+  import * as svc from '../data-services/contact';
+  import {contacts$} from '../store';
   import TagFilters from './TagFilters.svelte';
+  import TerritoryField from './TerritoryField.svelte';
   import {InputField, FrameBox, Button} from '../design-system';
 
   let filterTerritory = '';
@@ -15,11 +16,17 @@
     navigate(`/contacts/edit/${encodeURIComponent(id)}?fr=${encodeURIComponent('/contacts')}`);
   };
 
-  let contacts = [];
+  const assignTerritory = e => {
+    const {contactId, territoryId} = e.detail;
+    svc.assignTerritory(contactId, territoryId);
+  }
+
+  const unAssignTerritory = e => {
+    svc.unassignTerritory(e.detail.contactId);
+  }
+
   onMount(async () => {
-    await rehydrateContacts(true);
-    const unsubscribe = store.contacts$.subscribe(list => contacts = list);
-    return () => unsubscribe();
+    await svc.rehydrateContacts(true);
   });
 </script>
 
@@ -29,7 +36,7 @@
   </p>
   <section>
     <InputField text="Territory" bind:value={filterTerritory}/>
-    <TagFilters />
+    <TagFilters/>
     <p>
       <Button on:click={gotoEditor}>New contact</Button>
     </p>
@@ -42,18 +49,30 @@
         <th>Name</th>
         <th>Phone Number</th>
         <th>Tags</th>
+        <th>Territory</th>
         <th>&nbsp;</th>
       </tr>
       </thead>
       <tbody>
-      {#each contacts as contact}
-          <tr>
-            <td>{contact.full_address}</td>
-            <td>{contact.name}</td>
-            <td>{contact.contact_info && contact.contact_info.phoneNumber}</td>
-            <td>{contact.tags}</td>
-            <td><Button on:click={() => editContact(contact.id)}>edit</Button></td>
-          </tr>
+      {#each $contacts$ as contact (contact.id)}
+        <tr>
+          <td>{contact.full_address}</td>
+          <td>{contact.name}</td>
+          <td>{contact.contact_info && contact.contact_info.phoneNumber}</td>
+          <td>{contact.tags}</td>
+          <td>
+            <TerritoryField
+              contactId={contact.id}
+              territoryId={contact.territory && contact.territory.id}
+              territoryName={contact.territory && `${contact.territory.code} - ${contact.territory.name}`}
+              on:assigning={assignTerritory}
+              on:unAssigning={unAssignTerritory}
+            />
+          </td>
+          <td>
+            <Button on:click={() => editContact(contact.id)}>edit</Button>
+          </td>
+        </tr>
       {/each}
       </tbody>
     </table>
@@ -64,13 +83,16 @@
   main {
     padding: 12px;
   }
+
   label {
     display: flex;
     flex-direction: row;
   }
+
   input {
     max-width: 400px;
   }
+
   :global(.tag-filters-box) {
     max-width: 500px;
   }
@@ -78,10 +100,12 @@
   table {
     width: 100%;
   }
+
   th {
     text-align: left;
     padding: 8px 16px;
   }
+
   td {
     padding: 0px 16px;
   }

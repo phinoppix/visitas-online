@@ -57,10 +57,7 @@ export async function removeTerritory(id) {
 	if (responseData.error === 'KO') {
 		throw responseData.message;
 	}
-	store.territories$.update(list => {
-		const idx = list.findIndex(t => t.id === id);
-		return [].concat(...list.slice(0, idx), ...list.slice(idx + 1))
-	});
+	store.territories$.update(list => removeElementByPredicate(list, t => t.id === id));
 }
 
 export async function rehydrateTerritories(forceHydrate) {

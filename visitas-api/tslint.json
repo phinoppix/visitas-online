@@ -1,0 +1,13 @@
+{
+    "defaultSeverity": "error",
+    "extends": [
+        "tslint:recommended"
+    ],
+    "jsRules": {},
+    "rules": {
+      "no-console": false,
+      "jsdoc-format": false,
+      "no-trailing-whitespace": [true, "ignore-template-strings"]
+    },
+    "rulesDirectory": []
+}
