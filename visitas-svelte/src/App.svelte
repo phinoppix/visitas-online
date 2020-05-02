@@ -2,6 +2,7 @@
   import ApolloClient from 'apollo-boost';
   import {setClient} from 'svelte-apollo';
   import {Router, Route} from 'svelte-routing';
+  import mapbox from 'mapbox-gl';
 
   import Header from './design-system/Header.svelte';
   import Dashboard from './dashboard/Dashboard.svelte';
@@ -11,6 +12,7 @@
   import ContactHome from './contact/ContactHome.svelte';
   import ContactEditor from './contact/ContactEditor.svelte';
 
+  mapbox.accessToken = 'MAP_ACCESS_TOKEN';
   const service = new ApolloClient({uri: 'API_ENDPOINT'});
   setClient(service);
 </script>

@@ -6,6 +6,7 @@ import InputField from './InputField.svelte';
 import NumberCard from './NumberCard.svelte';
 import TagButton from './TagButton.svelte';
 import TextareaField from './TextareaField.svelte';
+// import AddressField from './AddressField.svelte';
 
 export {
 	Button,
@@ -15,5 +16,6 @@ export {
 	InputField,
 	NumberCard,
 	TagButton,
-	TextareaField
+	TextareaField,
+	// AddressField
 };

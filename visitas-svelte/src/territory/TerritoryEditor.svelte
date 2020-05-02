@@ -5,6 +5,7 @@
   import {upsertTerritory, removeTerritory} from '../data-services/territory';
   import {territories$} from '../store';
   import {InlineAlert, FrameBox, InputField, Button} from '../design-system';
+  import Map from './Map.svelte';
 
   export let edit_id = '';
 
@@ -56,6 +57,7 @@
   main {
     display: flex;
     flex-direction: row;
+    height: calc(100% - 72px);
   }
 
   main > div:first-of-type {
@@ -98,5 +100,5 @@
       <p>Content here</p>
     </FrameBox>
   </div>
-  <div>map here</div>
+  <div><Map /></div>
 </main>

@@ -9,7 +9,7 @@
 
 {#if (message && message.length > 0)}
     <section class={errorType}>
-      <p>{message}</p><a on:click="{() => dispatch('dismissAlert')}">[ X dismiss ]</a>
+      <p>{message}</p><a href="javascript:void(0)" on:click="{() => dispatch('dismissAlert')}">[ X dismiss ]</a>
     </section>
 {/if}
 

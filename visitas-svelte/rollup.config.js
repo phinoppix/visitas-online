@@ -15,7 +15,10 @@ export default {
 		sourcemap: true,
 		format: 'iife',
 		name: 'app',
-		file: 'public/build/bundle.js'
+		file: 'public/build/bundle.js',
+		globals: {
+			events: 'events'
+		}
 	},
 	plugins: [
 		replace({
@@ -37,6 +40,7 @@ export default {
 		// consult the documentation for details:
 		// https://github.com/rollup/plugins/tree/master/packages/commonjs
 		resolve({
+			preferBuiltins: true,
 			browser: true,
 			dedupe: ['svelte']
 		}),
