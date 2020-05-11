@@ -1,3 +1,5 @@
+import {match} from 'svelte-routing/src/utils';
+
 export function upsertObject(list, targetData, primaryKey) {
 	const tmp = [...list];
 	const pk = primaryKey || "id";

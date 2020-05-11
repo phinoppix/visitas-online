@@ -1,5 +1,6 @@
 {
   "watch": "src/**/*.ts",
+  "ignore": ["*.test.ts"],
   "exec": "node -r dotenv/config -r ts-node/register --inspect src/server.ts",
   "ext": "ts"
 }

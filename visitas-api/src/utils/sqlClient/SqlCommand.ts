@@ -1,5 +1,5 @@
 import { ColumnMetaData, ColumnValue, Request, TediousType, TYPES } from 'tedious';
-import { append, isEmpty } from 'ramda';
+import * as R from 'ramda';
 
 import SqlConnection from './SqlConnection';
 import SqlParameter, { ParameterDirection } from './SqlParameter';
@@ -66,7 +66,7 @@ export default class SqlCommand {
 					rows,
 				});
 				if (more) {
-					buffer = append(rows, buffer);
+					buffer = R.append(rows, buffer);
 					console.log('Request.doneInProc new dataset', {
 						buffer
 					});
@@ -96,9 +96,9 @@ export default class SqlCommand {
 					buffer,
 					firstDatasetOnly,
 					datasets,
-					datasetsEmpty: isEmpty(datasets)
+					datasetsEmpty: R.isEmpty(datasets)
 				});
-				res(isEmpty(datasets) ? buffer[0] : firstDatasetOnly ? datasets[0] : datasets);
+				res(R.isEmpty(datasets) ? buffer[0] : firstDatasetOnly ? datasets[0] : datasets);
 			});
 
 			this.setupParameters(request);

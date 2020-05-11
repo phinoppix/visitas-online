@@ -1,4 +1,4 @@
-import { mergeDeepRight } from 'ramda';
+import * as R from 'ramda';
 import { Connection, ConnectionConfig } from 'tedious';
 
 const DEFAULT_CONFIG: ConnectionConfig = {
@@ -29,7 +29,7 @@ export default class SqlConnection {
   status: ConnectionStatus = ConnectionStatus.Closed;
 
   constructor(config: ConnectionConfig) {
-    this.config = config != DEFAULT_CONFIG ? mergeDeepRight(DEFAULT_CONFIG, config) : config;
+    this.config = config != DEFAULT_CONFIG ? R.mergeDeepRight(DEFAULT_CONFIG, config) : config;
   }
 
   open = () => new Promise((res, rej) => {

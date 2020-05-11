@@ -51,7 +51,7 @@ export const queryResolvers = {
 			root.territory || territoryLoader.get(context.divisionId, root.territory && root.territory!.id!),
     division: (root: Contact) => {
     	console.log('queryResolver.root@Contact.division', {root});
-    	return root.division || divisionLoader.get(root.division!.code);
+    	return root.division || divisionLoader.get(root.division!.id);
 		}
   },
 };

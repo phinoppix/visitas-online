@@ -1,52 +1,85 @@
 import { TYPES } from 'tedious';
-import { head } from 'ramda';
+import * as R from 'ramda';
 
-import { RowData, SqlCommand } from '../utils/sqlClient';
-import { CommandType } from '../utils/sqlClient';
+import { CommandType, RowData, SqlCommand } from '../utils/sqlClient';
 import { InputUpsertContact } from '../schema/mutation-types';
 import { createConnection } from './common';
 
 export async function upsertContact(divisionId: string, contact: InputUpsertContact): Promise<RowData | undefined> {
+	const hasGeo = !(R.isNil(contact.st_name) || R.isNil(contact.cityTown) || R.isNil(contact.jsonData));
+
+	const parameters = [{
+		name: 'divisionId',
+		type: TYPES.UniqueIdentifier,
+		value: divisionId
+	}, {
+		name: 'contactId',
+		type: TYPES.UniqueIdentifier,
+		value: contact.id === '' ? null : contact.id
+	}, {
+		name: 'name',
+		value: contact.name
+	}, {
+		name: 'phoneNumber',
+		value: contact.phoneNumber
+	}, {
+		name: 'email',
+		value: contact.email
+	}, {
+		name: 'remarks',
+		value: contact.remarks
+	}, {
+		name: 'tags',
+		value: JSON.stringify(contact.tags)
+	}].concat(hasGeo ? [
+		{
+			name: 'st_number',
+			value: contact.st_number
+		},
+		{
+			name: 'st_name',
+			value: contact.st_name
+		},
+		{
+			name: 'cityTown',
+			value: contact.cityTown
+		},
+		{
+			name: 'stateProvince',
+			value: contact.stateProvince
+		},
+		{
+			name: 'country',
+			value: contact.country
+		},
+		{
+			name: 'postalCode',
+			value: contact.postalCode
+		},
+		{
+			name: 'jsonData',
+			value: contact.jsonData
+		},
+		{
+			name: 'jsonDataProvider',
+			value: contact.jsonDataProvider
+		}
+	] : [{
+		name: 'address_migration',
+		value: contact.address_migration
+	}]);
+
 	const con = await createConnection();
 	const cmd = new SqlCommand({
 		connection: con,
-		commandText: 'vis.usp_UpsertContact',
+		commandText: hasGeo ? 'vis.usp_UpsertContact2' : 'vis.usp_UpsertContact',
 		commandType: CommandType.StoredProcedure,
-		parameters: [{
-			name: 'divisionId',
-			type: TYPES.UniqueIdentifier,
-			value: divisionId
-		}, {
-			name: 'contactId',
-			type: TYPES.UniqueIdentifier,
-			value: contact.id === '' ? null : contact.id
-		}, {
-			name: 'name',
-			value: contact.name
-		}, {
-			name: 'full_address',
-			value: contact.full_address
-		}, {
-			name: 'location_data',
-			value: contact.location_data
-		}, {
-			name: 'phoneNumber',
-			value: contact.phoneNumber
-		}, {
-			name: 'email',
-			value: contact.email
-		}, {
-			name: 'remarks',
-			value: contact.remarks
-		}, {
-			name: 'tags',
-			value: JSON.stringify(contact.tags)
-		}]
+		parameters
 	});
 
 	try {
 		const rows = await cmd.executeReader(true);
-		return head(rows);
+		return R.head(rows);
 	} catch (e) {
 		console.error(e);
 		throw e;
@@ -57,12 +90,8 @@ export async function getContactsPerDivision(divisionId: string): Promise<RowDat
 	const con = await createConnection();
 	const cmd = new SqlCommand({
 		connection: con,
-		commandText: `
-    select c.*, tc.territory_id, t.code territory_code, t.name territory_name from vis.contact c
-    inner join vis.divisionContact dc on dc.division_id = @divisionId and dc.contact_id = c.id
-    left join vis.territoryContact tc on tc.division_id = @divisionId and tc.contact_id = c.id
-    left join vis.territory t on t.id = tc.territory_id`,
-		parameters: [{name: 'divisionId', value: divisionId}]
+		commandText: `select * from viewContactsWithPhoneNumber where [division:id]=@divisionId for json path;`,
+		parameters: [{ name: 'divisionId', value: divisionId }]
 	});
 
 	try {
@@ -92,7 +121,7 @@ export async function removeContact(divisionId: string, contactId: string) {
 
 	try {
 		await cmd.executeNonQuery();
-	} catch(e) {
+	} catch (e) {
 		console.error(e);
 		throw e;
 	}
@@ -105,20 +134,20 @@ export async function contactAssignTerritory(divisionId: string, contactId: stri
 		commandText: 'vis.usp_contactAssignTerritory',
 		commandType: CommandType.StoredProcedure,
 		parameters: [{
-			name: 'divisionId',
+			name: 'division_id',
 			value: divisionId
 		}, {
-			name: 'territoryId',
+			name: 'territory_id',
 			value: territoryId
 		}, {
-			name: 'contactId',
+			name: 'contact_id',
 			value: contactId
 		}]
 	});
 
 	try {
 		const result = await cmd.executeReader(true);
-		return head(result);
+		return R.head(result);
 	} catch (e) {
 		if (e.number === 2601)
 			return undefined;
@@ -134,17 +163,17 @@ export async function contactUnassignTerritory(divisionId: string, contactId: st
 		commandText: 'vis.usp_contactUnassignTerritory',
 		commandType: CommandType.StoredProcedure,
 		parameters: [{
-			name: 'divisionId',
+			name: 'division_id',
 			value: divisionId
 		}, {
-			name: 'contactId',
+			name: 'contact_id',
 			value: contactId
 		}]
 	});
 
 	try {
 		const result = await cmd.executeReader(true);
-		return head(result);
+		return R.head(result);
 	} catch (e) {
 		console.error(e);
 		throw e;

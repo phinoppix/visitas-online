@@ -21,12 +21,19 @@ export interface InputUpsertTerritory {
 }
 
 export interface InputUpsertContact {
-  id?: string;
-  name: string;
-  full_address?: string;
-  location_data?: string;
-  phoneNumber?: string;
+	id?: string;
+	name: string;
+	phoneNumber?: string;
 	email?: string;
-  remarks?: string;
-  tags?: string[];
+	remarks?: string;
+	tags?: [string];
+	address_migration?: string;
+	st_number?: string;
+	st_name?: string;
+	cityTown?: string;
+	stateProvince?: string;
+	country?: string;
+	postalCode?: string;
+	jsonData?: string;
+	jsonDataProvider?: string;
 }

@@ -6,6 +6,7 @@
   import TagFilters from './TagFilters.svelte';
   import {upsertContact, rehydrateContacts, removeContact} from '../data-services/contact';
   import * as store from '../store';
+  import AddressField from '../design-system/AddressField.svelte';
 
   export let edit_id = '';
 
@@ -74,6 +75,7 @@
   <section>
     <InputField text="Name" bind:value={inputName}/>
     <InputField text="Address" bind:value={inputAddress}/>
+    <AddressField bind:value={inputAddress} />
     <InputField text="Phone number" bind:value={inputPhoneNumber}/>
     <TextareaField text="Remarks" bind:value={inputRemarks}/>
     <p>Tags:</p>

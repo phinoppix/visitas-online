@@ -59,11 +59,18 @@ export const mutationSchema = gql`
   input InputUpsertContact {
 		id: String
     name: String!
-    full_address: String
-    location_data: String
 		phoneNumber: String
 		email: String
     remarks: String
 		tags: [String]
+    address_migration: String
+		st_number: String
+		st_name: String
+		cityTown: String
+		stateProvince: String
+		country: String
+		postalCode: String
+		jsonData: String
+		jsonDataProvider: String
   }
 `;

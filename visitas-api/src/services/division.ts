@@ -1,5 +1,5 @@
+import * as R from 'ramda';
 import { RowData, SqlCommand } from '../utils/sqlClient';
-import { head } from 'ramda';
 import { createConnection } from './common';
 
 export async function getDivision(id: string): Promise<RowData | undefined> {
@@ -12,7 +12,7 @@ export async function getDivision(id: string): Promise<RowData | undefined> {
 			parameters: [{ name: 'id', value: id }]
 		});
 		const rows = await cmd.executeReader(true);
-		return head(rows);
+		return R.head(rows);
 	} catch (e) {
 		console.error(e);
 	}

@@ -1,10 +1,10 @@
 import { TYPES } from 'tedious';
+import * as R from 'ramda';
 
 import { Territory } from '../schema/data-types';
 import { RowData, SqlCommand } from '../utils/sqlClient';
 import { CommandType } from '../utils/sqlClient';
 import { createConnection } from './common';
-import { head } from 'ramda';
 
 export async function getTerritory(divisionId: string, territoryId: string | undefined): Promise<Territory | undefined> {
   // const con = await createConnection();
@@ -54,7 +54,7 @@ export async function upsertTerritory(territory: Territory): Promise<RowData | u
 
   try {
     const rows = await cmd.executeReader(true);
-    return head(rows);
+    return R.head(rows);
   } catch (e) {
     console.error(e);
     throw e;

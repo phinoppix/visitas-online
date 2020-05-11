@@ -1,6 +1,5 @@
 import * as svc from '../services/division';
-import { head, map, pipe } from 'ramda';
-import { firstSlice, rowDataToColumnValuePair } from '../utils/misc';
+import { rowDataToColumnValuePair } from '../utils/misc';
 
 export const divisionLoader = {
   // TODO: Pull division data from cache

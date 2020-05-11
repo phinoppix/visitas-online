@@ -1,12 +1,12 @@
 import { gql } from 'apollo-server';
 
 export interface QueryArgsContactsPerTerritory {
-  divisionCode: string;
-  territoryCode: string;
+  divisionCode: String
+  territoryCode: String
 }
 
 export interface QueryArgsWithCongCode {
-  divisionCode: string;
+  divisionCode: String
 }
 
 export const querySchema = gql`
@@ -52,14 +52,16 @@ export const queryOutputSchema = gql`
     type Contact implements IStampableEntity {
         id: String!
         name: String!
-        full_address: String
+        address_migration: String
         contact_info: ContactInfo
-        location_data: String
+        address: ContactAddress
         remarks: String
+        tags: [String]
+        logs: [ContactActivityLog]
+				
         territory: Territory
         division: Division
-        tags: [String]
-
+				
         created: Stamp
         updated: Stamp
     }
@@ -68,6 +70,24 @@ export const queryOutputSchema = gql`
         phoneNumber: String
         email: String
     }
+
+    type ContactAddress {
+			id: String
+			st_number: String
+			st_name: String
+			cityTown: String
+			stateProvince: String
+			country: String
+			postalCode: String
+			jsonData: String
+			jsonDataProvider: String
+    }
+		
+		type ContactActivityLog {
+			date: String
+			logBy: String
+			activity: String
+		}
 
     type CheckoutEntry implements IStampableEntity {
         userId: String!

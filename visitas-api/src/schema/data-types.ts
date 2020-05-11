@@ -26,18 +26,38 @@ export interface Division extends IStampableEntity {
 export interface Contact extends IStampableEntity {
 	id?: string;
   name: string;
-  full_address?: string;
+  address_migration?: string;
   contact_info?: ContactInfo;
-  location_data?: string;
+  address?: ContactAddress;
   remarks?: string;
+	tags?: string[];
+	logs?: ContactActivityLog[];
+
   territory?: Territory;
   division?: Division;
-  tags?: string[];
 }
 
 export interface ContactInfo {
   phoneNumber?: string;
   email?: string;
+}
+
+export interface ContactAddress {
+	id: string;
+	st_number: string;
+	st_name: string;
+	cityTown: string;
+	stateProvince: string;
+	country: string;
+	postalCode: string;
+	jsonData: string;
+	jsonDataProvider: string;
+}
+
+export interface ContactActivityLog {
+	date: string;
+	logBy: string;
+	activity: string;
 }
 
 export interface CheckoutEntry extends IStampableEntity {
