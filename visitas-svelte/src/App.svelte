@@ -10,10 +10,11 @@
   import TerritoryEditor from './territory/TerritoryEditor.svelte';
   import Authorized from './Authorized.svelte';
   import ContactHome from './contact/ContactHome.svelte';
-  import ContactEditor from './contact/ContactEditor.svelte';
+  import {ContactEditor} from './contact/contactEditor';
+  import {appEnv} from './envConfig';
 
-  mapbox.accessToken = 'MAP_ACCESS_TOKEN';
-  const service = new ApolloClient({uri: 'API_ENDPOINT'});
+  mapbox.accessToken = appEnv.mapAccessToken;
+  const service = new ApolloClient({uri: appEnv.apiEndpoint});
   setClient(service);
 </script>
 

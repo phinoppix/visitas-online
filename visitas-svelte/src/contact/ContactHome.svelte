@@ -56,7 +56,7 @@
       <tbody>
       {#each $contacts$ as contact (contact.id)}
         <tr>
-          <td>{contact.full_address}</td>
+          <td>{contact.address_migration}</td>
           <td>{contact.name}</td>
           <td>{contact.contact_info && contact.contact_info.phoneNumber}</td>
           <td>{contact.tags}</td>

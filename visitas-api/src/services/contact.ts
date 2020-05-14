@@ -90,7 +90,7 @@ export async function getContactsPerDivision(divisionId: string): Promise<RowDat
 	const con = await createConnection();
 	const cmd = new SqlCommand({
 		connection: con,
-		commandText: `select * from viewContactsWithPhoneNumber where [division:id]=@divisionId for json path;`,
+		commandText: `select * from vis.viewContactsWithPhoneNumber where [division:id]=@divisionId for json path;`,
 		parameters: [{ name: 'divisionId', value: divisionId }]
 	});
 

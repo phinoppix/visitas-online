@@ -5,13 +5,31 @@ export const MUTATION_UPSERT_CONTACT = gql`
         upsertContact(contact: $contact) {
             id
             name
-            full_address
+            address_migration
             contact_info {
                 phoneNumber
                 email
             }
-            remarks
             tags
+            remarks
+            territory {
+                id
+                code
+                name
+            }
+            division {
+                id
+            }
+            address {
+                st_number
+                st_name
+                cityTown
+                stateProvince
+                country
+                postalCode
+                jsonData
+                jsonDataProvider
+            }
         }
     }
 `;
@@ -20,19 +38,32 @@ export const QUERY_CONTACTS = gql`
     {
         contactsPerDivision {
             id
-            name
-            full_address
-            contact_info {
-                phoneNumber
-                email
-            }
-            remarks
-            tags
-            territory {
-                id
+						name
+						address_migration
+						contact_info {
+								phoneNumber
+								email
+						}
+						tags
+						remarks
+						territory {
+								id
 								code
-                name
-            }
+								name
+						}
+						division {
+								id
+						}
+						address {
+								st_number
+								st_name
+								cityTown
+								stateProvince
+								country
+								postalCode
+								jsonData
+								jsonDataProvider
+						}
         }
     }
 `;
@@ -51,10 +82,12 @@ export const MUTATION_CONTACT_ASSIGN_TERRITORY = gql`
         contactAssignTerritory(contactId: $contactId, territoryId: $territoryId) {
             id
             name
-            full_address
+            address_migration
             contact_info {
                 phoneNumber
+                email
             }
+            tags
             remarks
             territory {
                 id
@@ -63,9 +96,17 @@ export const MUTATION_CONTACT_ASSIGN_TERRITORY = gql`
             }
             division {
                 id
-                name
             }
-            tags
+            address {
+                st_number
+                st_name
+                cityTown
+                stateProvince
+                country
+                postalCode
+                jsonData
+                jsonDataProvider
+            }
         }
     }
 `;
@@ -75,10 +116,12 @@ export const MUTATION_CONTACT_UNASSIGN_TERRITORY = gql`
         contactUnassignTerritory(contactId: $contactId) {
             id
             name
-            full_address
+            address_migration
             contact_info {
                 phoneNumber
+                email
             }
+            tags
             remarks
             territory {
                 id
@@ -87,9 +130,17 @@ export const MUTATION_CONTACT_UNASSIGN_TERRITORY = gql`
             }
             division {
                 id
-                name
             }
-            tags
+            address {
+                st_number
+                st_name
+                cityTown
+                stateProvince
+                country
+                postalCode
+                jsonData
+                jsonDataProvider
+            }
         }
     }
 `;

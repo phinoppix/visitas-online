@@ -39,3 +39,6 @@ export function removeElementByPredicate(list, predicate) {
 	const idx = list.findIndex(predicate);
 	return [].concat(...list.slice(0, idx), ...list.slice(idx + 1))
 }
+
+export const isEmptyOrNil = value =>
+	value === undefined || value === null || (value || '').length === 0;
