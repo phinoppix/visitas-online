@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 export const connectionConfig = {
   server: process.env.SQLHOST,
   authentication: {

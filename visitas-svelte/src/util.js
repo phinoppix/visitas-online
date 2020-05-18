@@ -1,5 +1,3 @@
-import {match} from 'svelte-routing/src/utils';
-
 export function upsertObject(list, targetData, primaryKey) {
 	const tmp = [...list];
 	const pk = primaryKey || "id";
@@ -13,15 +11,6 @@ export function upsertObject(list, targetData, primaryKey) {
 		list, targetData, primaryKey, subjectIndex, tmp
 	});
 	return tmp;
-}
-
-export function mutableRemoveElement(list, element) {
-	const idx = list.indexOf(element);
-	if (idx > -1) {
-		list.splice(idx, 1);
-	} else {
-		list.push(element);
-	}
 }
 
 export function removeElement(list, element) {
@@ -42,3 +31,30 @@ export function removeElementByPredicate(list, predicate) {
 
 export const isEmptyOrNil = value =>
 	value === undefined || value === null || (value || '').length === 0;
+
+const contextIdMapper = {
+	postcode: 'postalCode',
+	place: 'cityTown',
+	region: 'stateProvince'
+};
+
+const remapContextId = contextId => contextIdMapper[contextId] || contextId
+
+export const parseMapboxPlaceData = data => {
+	const contexts = data.context.map(c => ({
+			id: c.id.slice(0, c.id.indexOf('.')),
+			text: c.id.startsWith('country.') ? c.short_code : c.text
+		}))
+		.reduce((acc, cur) => ({
+			...acc,
+			[remapContextId(cur.id)]: cur.text
+		}), {});
+
+	return {
+		st_number: data.address,
+		st_name: data.text,
+		jsonData: JSON.stringify(data),
+		jsonDataProvider: 'mapbox',
+		...contexts
+	};
+}

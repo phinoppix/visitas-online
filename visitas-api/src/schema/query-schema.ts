@@ -88,7 +88,7 @@ export const queryOutputSchema = gql`
 			logBy: String
 			activity: String
 		}
-
+ 
     type CheckoutEntry implements IStampableEntity {
         userId: String!
         checkOut: String

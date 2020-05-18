@@ -3,7 +3,7 @@ import { typeDefs } from './schema';
 import { resolvers } from './resolvers';
 import { printAppVars } from './utils/info';
 import { IServerContext } from './IServerContext';
-require('dotenv').config();
+
 
 const server = new ApolloServer({ 
   typeDefs,

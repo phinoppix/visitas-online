@@ -2,7 +2,7 @@ import {getClient, mutate, query} from 'svelte-apollo';
 import {get} from 'svelte/store';
 
 import * as store from '../store';
-import {upsertObject} from '../util';
+import {upsertObject, removeElementByPredicate} from '../util';
 import * as queries from './contact-gql';
 
 export async function upsertContact(contact) {
@@ -62,5 +62,12 @@ export async function rehydrateContacts(forceHydrate) {
 		return;
 	}
 	const result = await getContacts();
-	store.contacts$.set(result.data.contactsPerDivision);
+	const list = result.data.contactsPerDivision.map(c => ({
+		...c,
+		address: c.address && {
+			...c.address,
+			place_name: c.address.jsonData && JSON.parse(c.address.jsonData).place_name
+		}
+	}));
+	store.contacts$.set(list);
 }

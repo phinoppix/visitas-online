@@ -29,3 +29,16 @@
   });
 </script>
 <div id="address-field"></div>
+<style>
+  div {
+    flex: 1;
+    max-width: 70%;
+  }
+  :global(div.mapboxgl-ctrl-geocoder) {
+    width: 100% !important;
+    max-width: unset !important;
+    box-shadow: none;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+  }
+</style>

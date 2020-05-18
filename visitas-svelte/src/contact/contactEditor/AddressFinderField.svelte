@@ -4,7 +4,9 @@
   import {AddressFinder} from '../../design-system/mapbox';
 
   export let cancellable = false;
-  export let findLocation = null;
+  export let inputAddress = null;
+
+  $: findLocation = typeof inputAddress === 'string' ? inputAddress : inputAddress.place_name;
 
   const dispatch = createEventDispatcher();
 </script>

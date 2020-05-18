@@ -2,11 +2,13 @@
   import {onMount} from 'svelte';
   import {navigate} from 'svelte-routing';
 
+  import {parseMapboxPlaceData} from '../../util';
   import {InlineAlert, InputField, Button, TextareaField} from '../../design-system';
-  import TagFilters from '../TagFilters.svelte';
   import {upsertContact, rehydrateContacts, removeContact} from '../../data-services/contact';
   import * as store from '../../store';
+  import TagFilters from '../TagFilters.svelte';
   import AddressInputField from './AddressInputField.svelte';
+  import {STATE_EDITING, STATE_MIGRATING} from './common';
 
   export let edit_id = '';
 
@@ -31,7 +33,8 @@
       email: inputEmail,
       remarks: inputRemarks,
       tags: inputTags,
-      address_migration: inputAddressMigration
+      address_migration: inputAddressMigration,
+      ...(inputAddressData && parseMapboxPlaceData(inputAddressData))
     };
 
     try {
@@ -70,6 +73,7 @@
       inputRemarks = contact.remarks;
       inputAddressMigration = contact.address_migration;
       inputEmail = contact.contact_info.email;
+      inputAddressData = contact.address;
       canDelete = true;
     });
     return () => unsubscribe();
@@ -77,6 +81,7 @@
 
   const onConfirmAddress = e => {
   	console.log('onConfirmAddress', e);
+  	inputAddressData = e.detail.addressFinderResult.data.result;
   }
 </script>
 
@@ -84,7 +89,10 @@
   <InlineAlert {message} on:dismissAlert={dismissAlert}/>
   <section>
     <InputField text="Name" bind:value={inputName}/>
-    <AddressInputField {inputAddressMigration} on:confirm_address={onConfirmAddress} />
+    <AddressInputField
+      inputAddress={inputAddressData || inputAddressMigration}
+      initState={inputAddressData !== null ? STATE_EDITING : STATE_MIGRATING}
+      on:confirm_address={onConfirmAddress} />
     <InputField text="Phone number" bind:value={inputPhoneNumber}/>
     <InputField text="Email" bind:value={inputEmail} type="email"/>
     <TextareaField text="Remarks" bind:value={inputRemarks}/>

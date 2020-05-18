@@ -1,31 +1,22 @@
 <script>
-  import {onMount, createEventDispatcher} from 'svelte';
+  import {createEventDispatcher} from 'svelte';
 
-  import {isEmptyOrNil} from '../../util';
   import AddressFinderField from './AddressFinderField.svelte';
   import AddressMigrationField from './AddressMigrationField.svelte';
+  import {STATE_MIGRATING, STATE_VERIFYING, STATE_UNKNOWN, STATE_EDITING} from './common';
 
-  export let inputAddressMigration = '';
-  export let inputAddressData = null;
+  export let inputAddress = null;  // string | object
+  export let initState = STATE_UNKNOWN; // STATE_MIGRATING | STATE_EDITING
 
-  const AddressFieldType = {
-    migration: 'migration',
-    finder: 'finder',
-    finderCancellable: 'finder-cancellable'
-  };
+  $: currentState = initState;
 
   const dispatch = createEventDispatcher();
 
-  let addressFieldType = AddressFieldType.migration; // migration | map | map-cancellable
   let addressFinderResult = null;
-
-  onMount(() => {
-    addressFieldType = isEmptyOrNil(inputAddressMigration) ? AddressFieldType.migration : AddressFieldType.finder;
-  });
 
   function onAddressFinderResult(e) {
     addressFinderResult = e.detail;
-    if (addressFieldType === AddressFieldType.finder) {
+    if (currentState === STATE_EDITING) {
       dispatch('confirm_address', {addressFinderResult});
     }
   }
@@ -36,18 +27,25 @@
 </script>
 
 <label>
-  Address:
-    {#if addressFieldType === AddressFieldType.migration}
+  Address ({currentState}):
+    {#if currentState === STATE_MIGRATING}
       <AddressMigrationField
-        address_migration={inputAddressMigration}
-        on:verify_address={() => addressFieldType = AddressFieldType.finderCancellable}/>
+        address_migration={inputAddress}
+        on:verify_address={() => currentState = STATE_VERIFYING}/>
     {:else}
       <AddressFinderField
-        cancellable={addressFieldType === AddressFieldType.finderCancellable}
-        findLocation={inputAddressMigration || inputAddressData}
+        cancellable={currentState === STATE_VERIFYING}
+        {inputAddress}
         on:update_address={onUpdateAddress}
-        on:cancel_address={() => addressFieldType = AddressFieldType.migration}
+        on:cancel_address={() => currentState = STATE_MIGRATING}
         on:addressFinder_result={onAddressFinderResult}
       />
     {/if}
 </label>
+
+<style>
+  label {
+    display: flex;
+    justify-content: space-between;
+  }
+</style>
