@@ -10,3 +10,5 @@ export const territories$ = writable([], () => {
 export const contacts$ = writable([], () => {
 	contactsLoaded$.set(true);
 });
+
+export const tags$ = writable([]);

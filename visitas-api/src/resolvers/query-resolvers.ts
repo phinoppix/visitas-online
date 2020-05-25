@@ -2,7 +2,7 @@ import { QueryArgsWithCongCode, QueryArgsContactsPerTerritory } from '../schema/
 import { divisionLoader } from '../data-loaders/division-loader';
 import * as territoryLoader from '../data-loaders/territory-loader';
 import { contactLoader } from '../data-loaders/contact-loader';
-import { Territory, Contact } from '../schema/data-types';
+import { Territory, Contact, ContactsFilter } from '../schema/data-types';
 import { IServerContext } from '../IServerContext';
 import { tagsLoader } from '../data-loaders/tags-loader';
 
@@ -12,8 +12,8 @@ export const queryResolvers = {
       await divisionLoader.get(id),
     territoriesPerDivision: (_1: any, _2: any, context: IServerContext) =>
       territoryLoader.getAllByDivision(context.divisionId),
-		contactsPerDivision: async (_: any, _2: any, context: IServerContext) =>
-      await contactLoader.getContactsPerDivision(context.divisionId),
+		contactsPerDivision: async (_: any, {filter}: {filter: ContactsFilter}, context: IServerContext) =>
+      await contactLoader.getContactsPerDivision(context.divisionId, filter),
 		tags: (_1: any, _2: any, context: IServerContext) =>
 			tagsLoader.get(context.divisionId)
   },

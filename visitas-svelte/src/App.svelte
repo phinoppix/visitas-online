@@ -9,7 +9,7 @@
   import TerritoriesHome from './territory/TerritoriesHome.svelte';
   import TerritoryEditor from './territory/TerritoryEditor.svelte';
   import Authorized from './Authorized.svelte';
-  import ContactHome from './contact/ContactHome.svelte';
+  import {ContactHome} from './contact/contactHome';
   import {ContactEditor} from './contact/contactEditor';
   import {appEnv} from './envConfig';
 

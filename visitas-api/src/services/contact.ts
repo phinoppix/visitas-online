@@ -4,8 +4,9 @@ import * as R from 'ramda';
 import { CommandType, RowData, SqlCommand } from '../utils/sqlClient';
 import { InputUpsertContact } from '../schema/mutation-types';
 import { createConnection } from './common';
+import { ContactsFilter } from '../schema/data-types';
 
-export async function upsertContact(divisionId: string, contact: InputUpsertContact): Promise<RowData | undefined> {
+export async function upsertContact(divisionId: string, contact: InputUpsertContact): Promise<RowData[]> {
 	const hasGeo = !(R.isNil(contact.st_name) || R.isNil(contact.cityTown) || R.isNil(contact.jsonData));
 
 	const parameters = [{
@@ -63,6 +64,10 @@ export async function upsertContact(divisionId: string, contact: InputUpsertCont
 		{
 			name: 'jsonDataProvider',
 			value: contact.jsonDataProvider
+		},
+		{
+			name: 'place_name',
+			value: contact.place_name
 		}
 	] : [{
 		name: 'address_migration',
@@ -78,25 +83,28 @@ export async function upsertContact(divisionId: string, contact: InputUpsertCont
 	});
 
 	try {
-		const rows = await cmd.executeReader(true);
-		return R.head(rows);
+		return await cmd.executeReader(true);
 	} catch (e) {
 		console.error(e);
 		throw e;
 	}
 }
 
-export async function getContactsPerDivision(divisionId: string): Promise<RowData[]> {
+export async function getContactsPerDivision(divisionId: string, filter: ContactsFilter): Promise<RowData[]> {
 	const con = await createConnection();
 	const cmd = new SqlCommand({
 		connection: con,
-		commandText: `select * from vis.viewContactsWithPhoneNumber where [division:id]=@divisionId for json path;`,
-		parameters: [{ name: 'divisionId', value: divisionId }]
+		commandText: `select * from vis.viewContactsWithPhoneNumber 
+		where [division:id]=@divisionId and 
+		([territory:id]=@territoryId or (@territoryId is null and [territory:id] is null)) for json path;`,
+		parameters: [
+			{ name: 'divisionId', value: divisionId },
+			{ name: 'territoryId', value: filter.territoryId }
+		]
 	});
 
 	try {
 		return await cmd.executeReader(true);
-		// return result.map(rowDataToColumnValuePair(tagsColumnPredicate));
 	} catch (e) {
 		console.error(e);
 		throw e;
@@ -127,7 +135,7 @@ export async function removeContact(divisionId: string, contactId: string) {
 	}
 }
 
-export async function contactAssignTerritory(divisionId: string, contactId: string, territoryId: string): Promise<RowData | undefined> {
+export async function contactAssignTerritory(divisionId: string, contactId: string, territoryId: string): Promise<RowData[]> {
 	const con = await createConnection();
 	const cmd = new SqlCommand({
 		connection: con,
@@ -146,17 +154,14 @@ export async function contactAssignTerritory(divisionId: string, contactId: stri
 	});
 
 	try {
-		const result = await cmd.executeReader(true);
-		return R.head(result);
+		return await cmd.executeReader(true);
 	} catch (e) {
-		if (e.number === 2601)
-			return undefined;
 		console.error(e);
 		throw e;
 	}
 }
 
-export async function contactUnassignTerritory(divisionId: string, contactId: string): Promise<RowData | undefined> {
+export async function contactUnassignTerritory(divisionId: string, contactId: string): Promise<RowData[]> {
 	const con = await createConnection();
 	const cmd = new SqlCommand({
 		connection: con,
@@ -172,8 +177,7 @@ export async function contactUnassignTerritory(divisionId: string, contactId: st
 	});
 
 	try {
-		const result = await cmd.executeReader(true);
-		return R.head(result);
+		return await cmd.executeReader(true);
 	} catch (e) {
 		console.error(e);
 		throw e;

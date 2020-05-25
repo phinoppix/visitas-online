@@ -1,16 +1,19 @@
 <script>
-  import {createEventDispatcher} from 'svelte';
+  import {onMount, createEventDispatcher} from 'svelte';
 
+  import * as store from '../store';
   import {TagButton} from '../design-system';
   import {removeElement} from '../util';
 
   export let tags = [];
+  export let supportedTags = [];
 
-  const supportedTags = ['confirmed', 'do not visit', 'Iloko', 'Tagalog', 'invalid', 'not home'];
+  const dispatch = createEventDispatcher();
 
   const toggleTag = tag => {
-  	tags = removeElement(tags, tag);
-  }
+    tags = removeElement(tags, tag);
+    dispatch('change');
+  };
 </script>
 
 <div class="tag-filters-box">
@@ -23,12 +26,6 @@
 </div>
 
 <style>
-  div {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-  }
-
   a {
     padding: 5px;
     margin: 0 5px;
@@ -43,5 +40,10 @@
   :global(.active) {
     background-color: cornflowerblue !important;
     color: white;
+  }
+  div :global(button) {
+    display: inline-block;
+    margin-right: 8px;
+    margin-bottom: 8px;
   }
 </style>

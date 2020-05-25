@@ -36,4 +36,5 @@ export interface InputUpsertContact {
 	postalCode?: string;
 	jsonData?: string;
 	jsonDataProvider?: string;
+	place_name: string;
 }

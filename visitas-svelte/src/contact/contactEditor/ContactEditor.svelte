@@ -4,7 +4,7 @@
 
   import {parseMapboxPlaceData} from '../../util';
   import {InlineAlert, InputField, Button, TextareaField} from '../../design-system';
-  import {upsertContact, rehydrateContacts, removeContact} from '../../data-services/contact';
+  import {upsertContact, removeContact} from '../../data-services/contact';
   import * as store from '../../store';
   import TagFilters from '../TagFilters.svelte';
   import AddressInputField from './AddressInputField.svelte';
@@ -19,9 +19,13 @@
   let inputTags = [];
   let inputAddressMigration = '';
   let inputAddressData = null;
+  let candidateAddress = null;
 
   let message = '';
   let canDelete = false;
+  let supportedTags = [];
+
+  $: targetAddress = (inputAddressData && inputAddressData.place_name) || inputAddressMigration;
 
   const urlCaller = new URLSearchParams(window.location.search).get('fr');
 
@@ -34,7 +38,7 @@
       remarks: inputRemarks,
       tags: inputTags,
       address_migration: inputAddressMigration,
-      ...(inputAddressData && parseMapboxPlaceData(inputAddressData))
+      ...(candidateAddress ? parseMapboxPlaceData(candidateAddress) : inputAddressData)
     };
 
     try {
@@ -61,10 +65,8 @@
 
   const dismissAlert = () => message = '';
 
-
   onMount(async () => {
-    await rehydrateContacts();
-    const unsubscribe = store.contacts$.subscribe(list => {
+    const unsubContacts = store.contacts$.subscribe(list => {
       const contact = list.find(c => c.id === edit_id);
       if (!contact) return;
       inputName = contact.name;
@@ -76,13 +78,21 @@
       inputAddressData = contact.address;
       canDelete = true;
     });
-    return () => unsubscribe();
+
+    const unsubTags = store.tags$.subscribe(data => supportedTags = data.map(t => t.tag).sort());
+
+    return () => {
+      unsubContacts();
+      unsubTags();
+    }
   });
 
   const onConfirmAddress = e => {
-  	console.log('onConfirmAddress', e);
-  	inputAddressData = e.detail.addressFinderResult.data.result;
+    console.log('onConfirmAddress', e.detail.addressFinderResult.data.result);
+    candidateAddress = e.detail.addressFinderResult.data.result;
   }
+
+  const getInitState = address => (typeof value === 'string' && value.length > 0) ? STATE_MIGRATING : STATE_EDITING;
 </script>
 
 <main>
@@ -90,14 +100,14 @@
   <section>
     <InputField text="Name" bind:value={inputName}/>
     <AddressInputField
-      inputAddress={inputAddressData || inputAddressMigration}
-      initState={inputAddressData !== null ? STATE_EDITING : STATE_MIGRATING}
-      on:confirm_address={onConfirmAddress} />
+      inputAddress={targetAddress}
+      initState={getInitState(targetAddress)}
+      on:confirm_address={onConfirmAddress}/>
     <InputField text="Phone number" bind:value={inputPhoneNumber}/>
     <InputField text="Email" bind:value={inputEmail} type="email"/>
     <TextareaField text="Remarks" bind:value={inputRemarks}/>
     <p>Tags:</p>
-    <TagFilters bind:tags={inputTags}/>
+    <TagFilters bind:tags={inputTags} {supportedTags}/>
   </section>
   <div>
     <Button on:click={saveClick}>Save</Button>

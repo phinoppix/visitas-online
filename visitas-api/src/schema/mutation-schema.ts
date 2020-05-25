@@ -72,5 +72,6 @@ export const mutationSchema = gql`
 		postalCode: String
 		jsonData: String
 		jsonDataProvider: String
+		place_name: String
   }
 `;

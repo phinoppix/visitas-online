@@ -1,8 +1,8 @@
 <script>
   import {onMount, createEventDispatcher} from 'svelte';
 
-  import {Button} from '../design-system';
-  import * as store from '../store';
+  import {Button} from '../../design-system';
+  import * as store from '../../store';
 
   export let contactId = '';
   export let territoryId = null;

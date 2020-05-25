@@ -7,9 +7,7 @@ export function upsertObject(list, targetData, primaryKey) {
 	} else {
 		tmp.push(targetData);
 	}
-	console.log('upsertObject', {
-		list, targetData, primaryKey, subjectIndex, tmp
-	});
+
 	return tmp;
 }
 
@@ -35,19 +33,19 @@ export const isEmptyOrNil = value =>
 const contextIdMapper = {
 	postcode: 'postalCode',
 	place: 'cityTown',
-	region: 'stateProvince'
+	region: 'stateProvince',
+	country: 'country'
 };
-
-const remapContextId = contextId => contextIdMapper[contextId] || contextId
 
 export const parseMapboxPlaceData = data => {
 	const contexts = data.context.map(c => ({
 			id: c.id.slice(0, c.id.indexOf('.')),
 			text: c.id.startsWith('country.') ? c.short_code : c.text
 		}))
+		.filter(ctx => contextIdMapper[ctx.id])
 		.reduce((acc, cur) => ({
 			...acc,
-			[remapContextId(cur.id)]: cur.text
+			[contextIdMapper[cur.id]]: cur.text
 		}), {});
 
 	return {
@@ -55,6 +53,39 @@ export const parseMapboxPlaceData = data => {
 		st_name: data.text,
 		jsonData: JSON.stringify(data),
 		jsonDataProvider: 'mapbox',
+		place_name: data.place_name,
 		...contexts
 	};
 }
+
+export const cache = {
+	CONTACT_LIST_FILTER: 'visitas:CONTACT_LIST_FILTER',
+	get: (key) => {
+		try {
+			return localStorage && JSON.parse(localStorage.getItem(key));
+		} catch(e) {
+			return null;
+		}
+	},
+	set: (key, obj) => localStorage && localStorage.setItem(key, JSON.stringify(obj))
+};
+
+// Source: https://davidwalsh.name/function-debounce
+export function debounce(func, wait, immediate) {
+	var timeout;
+	return function() {
+		var context = this, args = arguments;
+		var later = function() {
+			timeout = null;
+			if (!immediate) func.apply(context, args);
+		};
+		var callNow = immediate && !timeout;
+		clearTimeout(timeout);
+		timeout = setTimeout(later, wait);
+		if (callNow) func.apply(context, args);
+	};
+};
+
+export const everyElemExistsAndViceVersa = x => y =>
+	x.every(t => y.includes(t)) ||
+	y.every(t => x.includes(t));

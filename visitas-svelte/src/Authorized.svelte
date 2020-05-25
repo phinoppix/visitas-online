@@ -1,11 +1,18 @@
 <script>
   import {onMount} from 'svelte';
+
   import {getTerritories} from './data-services/territory';
-  import {territories$} from './store';
+  import {getTags} from './data-services/tags';
+  import * as store from './store';
 
   onMount(async () => {
-    const result = await getTerritories();
-    territories$.set(result.data.territoriesPerDivision);
+    const tags = await getTags();
+    store.tags$.set(tags.data.tags);
+  });
+
+  onMount(async () => {
+    const territories = await getTerritories();
+    store.territories$.set(territories.data.territoriesPerDivision);
   });
 </script>
 <slot></slot>

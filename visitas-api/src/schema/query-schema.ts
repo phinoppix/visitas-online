@@ -13,7 +13,7 @@ export const querySchema = gql`
   type Query {
     division(id: String): Division
     territoriesPerDivision: [Territory]
-    contactsPerDivision: [Contact]
+    contactsPerDivision(filter: ContactsFilter): [Contact]
 		tags: [Tag]
   }
 `;
@@ -81,6 +81,7 @@ export const queryOutputSchema = gql`
 			postalCode: String
 			jsonData: String
 			jsonDataProvider: String
+			place_name: String
     }
 		
 		type ContactActivityLog {
@@ -128,4 +129,9 @@ export const queryOutputSchema = gql`
     type Tag {
         tag: String
     }
+	
+		input ContactsFilter {
+				territoryId: String
+				tags: [String]
+		}
 `;

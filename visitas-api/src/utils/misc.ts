@@ -44,8 +44,7 @@ const customFromPairs = (columnPredicates?: ColumnPredicates) => (acc: any, cur:
 		[key]: v1
 	};
 }
-
-export const jsonStreamAsJson = <T extends ColumnValuePair>(rows: RowData[], columnPredicates?: ColumnPredicates) => {
+export const sqlStreamAsJson = <T extends ColumnValuePair>(rows: RowData[], columnPredicates?: ColumnPredicates) => {
 	const input = JSON.parse(
 		''.concat(
 			...(R.map(

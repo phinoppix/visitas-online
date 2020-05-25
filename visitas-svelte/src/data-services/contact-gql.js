@@ -29,41 +29,43 @@ export const MUTATION_UPSERT_CONTACT = gql`
                 postalCode
                 jsonData
                 jsonDataProvider
+								place_name
             }
         }
     }
 `;
 
 export const QUERY_CONTACTS = gql`
-    {
-        contactsPerDivision {
+    query FindContacts($filter: ContactsFilter) {
+        contactsPerDivision(filter: $filter) {
             id
-						name
-						address_migration
-						contact_info {
-								phoneNumber
-								email
-						}
-						tags
-						remarks
-						territory {
-								id
-								code
-								name
-						}
-						division {
-								id
-						}
-						address {
-								st_number
-								st_name
-								cityTown
-								stateProvince
-								country
-								postalCode
-								jsonData
-								jsonDataProvider
-						}
+            name
+            address_migration
+            contact_info {
+                phoneNumber
+                email
+            }
+            tags
+            remarks
+            territory {
+                id
+                code
+                name
+            }
+            division {
+                id
+            }
+            address {
+                st_number
+                st_name
+                cityTown
+                stateProvince
+                country
+                postalCode
+                jsonData
+                jsonDataProvider
+                place_name
+            }
         }
     }
 `;
@@ -106,6 +108,7 @@ export const MUTATION_CONTACT_ASSIGN_TERRITORY = gql`
                 postalCode
                 jsonData
                 jsonDataProvider
+                place_name
             }
         }
     }
@@ -140,6 +143,7 @@ export const MUTATION_CONTACT_UNASSIGN_TERRITORY = gql`
                 postalCode
                 jsonData
                 jsonDataProvider
+                place_name
             }
         }
     }

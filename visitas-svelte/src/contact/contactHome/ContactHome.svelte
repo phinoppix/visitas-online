@@ -2,13 +2,17 @@
   import {onMount} from 'svelte';
   import {Link, navigate} from 'svelte-routing';
 
-  import * as svc from '../data-services/contact';
-  import {contacts$} from '../store';
-  import TagFilters from './TagFilters.svelte';
+  import * as svcContacts from '../../data-services/contact';
+  import * as svcTags from '../../data-services/tags';
+  import {contacts$, tags$} from '../../store';
   import TerritoryField from './TerritoryField.svelte';
-  import {InputField, FrameBox, Button} from '../design-system';
+  import {FrameBox, Button} from '../../design-system';
+  import ContactListFilter from './ContactListFilter.svelte';
+  import {debounce, everyElemExistsAndViceVersa} from '../../util';
 
-  let filterTerritory = '';
+  let filter = {};
+  let contacts = [];
+  let supportedTags = [];
 
   const gotoEditor = () => navigate('/contacts/add?fr=' + encodeURIComponent('/contacts'));
 
@@ -18,15 +22,35 @@
 
   const assignTerritory = e => {
     const {contactId, territoryId} = e.detail;
-    svc.assignTerritory(contactId, territoryId);
+    svcContacts.assignTerritory(contactId, territoryId);
   }
 
   const unAssignTerritory = e => {
-    svc.unassignTerritory(e.detail.contactId);
+    svcContacts.unassignTerritory(e.detail.contactId);
   }
 
-  onMount(async () => {
-    await svc.rehydrateContacts(true);
+  const onApplyFilter = debounce(e => {
+    filter = e.detail;
+    svcContacts.getContacts(e.detail);
+  }, 500);
+
+  onMount(() => {
+    // NOTE: Client-side filtering of the contact list is a temporary solution.
+    const unsubContacts = contacts$.subscribe(list => {
+      console.log('subscribe', {list, filter});
+      if (filter.tags && filter.tags.length > 0) {
+        contacts = list.filter(c => everyElemExistsAndViceVersa(filter.tags)(c.tags));
+      } else {
+        contacts = list;
+      }
+    });
+
+    const unsubTags = tags$.subscribe(data => supportedTags = data.map(t => t.tag).sort());
+
+    return () => {
+      unsubContacts();
+      unsubTags();
+    }
   });
 </script>
 
@@ -35,8 +59,7 @@
     <Link to="/">&lt;&nbsp;Dashboard</Link>
   </p>
   <section>
-    <InputField text="Territory" bind:value={filterTerritory}/>
-    <TagFilters/>
+    <ContactListFilter on:applyFilter={onApplyFilter} {supportedTags}/>
     <p>
       <Button on:click={gotoEditor}>New contact</Button>
     </p>
@@ -54,9 +77,9 @@
       </tr>
       </thead>
       <tbody>
-      {#each $contacts$ as contact (contact.id)}
+      {#each contacts as contact (contact.id)}
         <tr>
-          <td>{(contact && contact.address && contact.address.place_name) || contact.address_migration}</td>
+          <td>{(contact.address && contact.address.place_name) || contact.address_migration}</td>
           <td>{contact.name}</td>
           <td>{contact.contact_info && contact.contact_info.phoneNumber}</td>
           <td>{contact.tags}</td>
@@ -75,6 +98,9 @@
         </tr>
       {/each}
       </tbody>
+        {#if contacts.length === 0}
+          <tfoot>No records found</tfoot>
+        {/if}
     </table>
   </FrameBox>
 </main>

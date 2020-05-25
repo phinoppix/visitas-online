@@ -11,6 +11,11 @@
   const dispatch = createEventDispatcher();
 
   let geocoder;
+  $: {
+    if (!isEmptyOrNil(findLocation)) {
+      geocoder.setInput(findLocation);
+    }
+  }
 
   onMount(() => {
     geocoder = new MapboxGeocoder({
@@ -22,10 +27,6 @@
       dispatch(EVENT_ADDRESS_FINDER_RESULT, {data}); // TODO: Call utility to parse data into visitas-compatible data structure
     });
     geocoder.addTo('#address-field');
-
-    if (!isEmptyOrNil(findLocation)) {
-      geocoder.query(findLocation);
-    }
   });
 </script>
 <div id="address-field"></div>

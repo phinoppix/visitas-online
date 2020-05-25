@@ -1,8 +1,8 @@
-import { jsonStreamAsJson, tagsColumnPredicate } from './misc';
+import { sqlStreamAsJson, tagsColumnPredicate } from './misc';
 import { Contact } from '../schema/data-types';
 
 describe('misc', () => {
-	it('jsonStreamAsJson should return array of T', () => {
+	it('sqlStreamAsJson should return array of T', () => {
 		const sample = [
 			{
 				'JSON_xxxx': {
@@ -44,6 +44,6 @@ describe('misc', () => {
 				"name": "Test 1002",
 			}
 		}];
-		expect(jsonStreamAsJson<Contact>(sample, tagsColumnPredicate)).toEqual(output);
+		expect(sqlStreamAsJson<Contact>(sample, tagsColumnPredicate)).toEqual(output);
 	});
 })

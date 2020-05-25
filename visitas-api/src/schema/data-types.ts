@@ -89,3 +89,8 @@ export interface Territory extends IStampableEntity {
 export interface Tag {
 	tag: string;
 }
+
+export interface ContactsFilter {
+	territoryId: string;
+	tags: string[];
+}
