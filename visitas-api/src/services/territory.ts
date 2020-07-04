@@ -12,7 +12,7 @@ export async function getTerritory(divisionId: string, territoryId: string | und
 }
 
 export async function getTerritoriesByDivision(divisionId: string): Promise<RowData[]> {
-  const con = await createConnection();
+	const con = await createConnection();
   const cmd = new SqlCommand({
     connection: con,
     commandText: `
@@ -37,11 +37,11 @@ export async function upsertTerritory(territory: Territory): Promise<RowData | u
     commandType: CommandType.StoredProcedure,
     parameters: [{
       name: 'divisionId',
-      type: TYPES.UniqueIdentifier,
+      type: TYPES.NVarChar,
       value: territory.division!.id
     }, {
       name: 'territoryId',
-      type: TYPES.UniqueIdentifier,
+      type: TYPES.VarChar,
       value: territory.id === '' ? null : territory.id
     }, {
       name: 'code',

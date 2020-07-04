@@ -13,3 +13,10 @@ export const connectionConfig = {
     database: process.env.SQLINITDB
   }
 };
+
+export const authServer = {
+	oktaDomain: process.env.OKTA_DOMAIN,
+	cors: {
+		origin: process.env.CORS_ORIGIN
+	}
+}

@@ -1,8 +1,8 @@
 import {getClient, mutate, query} from 'svelte-apollo';
 import {get} from 'svelte/store';
+import * as store from '../store';
 
 import {upsertObject} from '../util';
-import * as store from '../store';
 
 import {
 	QUERY_GET_TERRITORIES,
@@ -10,14 +10,13 @@ import {
 	QUERY_UPSERT_TERRITORY
 } from './territory-gql';
 
-
-export async function getTerritories() {
+export const getTerritories = async () => {
 	const client = getClient();
 	const qry = await query(client, {
 		query: QUERY_GET_TERRITORIES
 	});
 	return qry.result();
-}
+};
 
 export async function upsertTerritory(inputId, inputCode, inputName) {
 	const client = getClient();
@@ -48,11 +47,11 @@ export function getTerritory(id) {
 export async function removeTerritory(id) {
 	const client = getClient();
 	const response = await mutate(client, {
-			mutation: QUERY_REMOVE_TERRITORY,
-			variables: {
-				territoryId: id
-			}
-		});
+		mutation: QUERY_REMOVE_TERRITORY,
+		variables: {
+			territoryId: id
+		}
+	});
 	const responseData = response.data.removeTerritory;
 	if (responseData.error === 'KO') {
 		throw responseData.message;

@@ -6,6 +6,7 @@
   import {territories$} from '../store';
   import {InlineAlert, FrameBox, InputField, Button} from '../design-system';
   import Map from './Map.svelte';
+  import TerritoriesLoader from './TerritoriesLoader.svelte';
 
   export let edit_id = '';
 
@@ -81,6 +82,7 @@
     justify-content: center;
   }
 </style>
+<TerritoriesLoader />
 <InlineAlert {message} on:dismissAlert={dismissAlert}/>
 <main>
   <div class="left">

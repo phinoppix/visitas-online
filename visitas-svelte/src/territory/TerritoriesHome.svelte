@@ -8,6 +8,7 @@
   import TerritoryList from './TerritoryList.svelte';
   import * as store from '../store';
   import {OPTIONS_MONTHS, OPTIONS_ADDRESSCOUNT} from './filterOptions';
+  import TerritoriesLoader from './TerritoriesLoader.svelte';
 
   const createTerritory = () =>
     navigate(`/territories/add?fr=${encodeURIComponent('/territories')}`);
@@ -20,6 +21,7 @@
     navigate(`/territories/edit/${encodeURIComponent(event.detail.id)}?fr=${encodeURIComponent('/territories')}`);
 
   let territories = [];
+
   onMount(() => {
     const unsubscribe = store.territories$.subscribe(value => territories = value);
     return () => unsubscribe();
@@ -55,6 +57,7 @@
   }
 </style>
 
+<TerritoriesLoader />
 <main>
   <p>
     <Link to="/">&lt;&nbsp;Dashboard</Link>

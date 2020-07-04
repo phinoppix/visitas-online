@@ -29,7 +29,7 @@ export default class SqlConnection {
   status: ConnectionStatus = ConnectionStatus.Closed;
 
   constructor(config: ConnectionConfig) {
-    this.config = config != DEFAULT_CONFIG ? R.mergeDeepRight(DEFAULT_CONFIG, config) : config;
+    this.config = config != DEFAULT_CONFIG ? R.mergeDeepRight(DEFAULT_CONFIG, config) as ConnectionConfig : config;
   }
 
   open = () => new Promise((res, rej) => {

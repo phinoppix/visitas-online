@@ -11,11 +11,11 @@ export async function upsertContact(divisionId: string, contact: InputUpsertCont
 
 	const parameters = [{
 		name: 'divisionId',
-		type: TYPES.UniqueIdentifier,
+		type: TYPES.NVarChar,
 		value: divisionId
 	}, {
 		name: 'contactId',
-		type: TYPES.UniqueIdentifier,
+		type: TYPES.VarChar,
 		value: contact.id === '' ? null : contact.id
 	}, {
 		name: 'name',
