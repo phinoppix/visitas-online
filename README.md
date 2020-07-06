@@ -14,4 +14,13 @@ Database: SqlServer Express 2019
 
 ID Provider: Okta
 
-Backend and Database components are docker containers.
+### Deployment
+
+Admins are most likely to run the app in silos because of internet access and cost related issues.
+They are just volunteers after all so I have to keep the cost of running and maintaining the app close to zero for the admins.
+
+Currently, there are 2 confirmed deployment scenarios:
+- a home server running on Windows and IIS
+- laptop as a stand-alone app
+
+As a web app, the deployment scripts are ready and being tested.  As a stand-alone app, I will be exploring `pkg` next.
