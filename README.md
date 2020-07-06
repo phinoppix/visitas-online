@@ -12,4 +12,6 @@ Backend: Node.js + Typescript + Apollo Graphql
 
 Database: SqlServer Express 2019
 
+ID Provider: Okta
+
 Backend and Database components are docker containers.
