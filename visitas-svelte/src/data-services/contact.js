@@ -1,12 +1,10 @@
 import {getClient, mutate, query} from 'svelte-apollo';
-import {get} from 'svelte/store';
 
-import * as store from '../store';
+import {contacts$} from '../store';
 import {removeElementByPredicate, upsertObject} from '../util';
 import * as queries from './contact-gql';
 
-export async function upsertContact(contactData) {
-	const client = getClient();
+export async function upsertContact(client, contactData) {
 	const contact = {
 		...contactData,
 		__typename: undefined
@@ -16,18 +14,16 @@ export async function upsertContact(contactData) {
 		mutation: queries.MUTATION_UPSERT_CONTACT,
 		variables: {contact}
 	});
-	store.contacts$.update(list => upsertObject(list, updatedObj.data.upsertContact));
+	contacts$.update(list => upsertObject(list, updatedObj.data.upsertContact));
 	return updatedObj;
 }
 
-export async function getContacts(filter) {
-	const client = getClient();
+export async function getContacts(client, filter) {
 	const qry = await query(client, {
 		query: queries.QUERY_CONTACTS,
 		variables: {filter}
 	});
-	const result = await qry.result();
-	store.contacts$.set(result.data.contactsPerDivision);
+	return qry.result();
 }
 
 export async function removeContact(contactId) {
@@ -40,7 +36,7 @@ export async function removeContact(contactId) {
 	if (responseData.error === 'KO') {
 		throw responseData.message;
 	}
-	store.contacts$.update(list => removeElementByPredicate(list, t => t.id === contactId));
+	contacts$.update(list => removeElementByPredicate(list, t => t.id === contactId));
 }
 
 export async function assignTerritory(contactId, territoryId) {
@@ -52,7 +48,7 @@ export async function assignTerritory(contactId, territoryId) {
 			territoryId
 		}
 	});
-	store.contacts$.update(list => upsertObject(list, response.data.contactAssignTerritory));
+	contacts$.update(list => upsertObject(list, response.data.contactAssignTerritory));
 }
 
 export async function unassignTerritory(contactId, territoryId) {
@@ -61,5 +57,5 @@ export async function unassignTerritory(contactId, territoryId) {
 		mutation: queries.MUTATION_CONTACT_UNASSIGN_TERRITORY,
 		variables: {contactId}
 	});
-	store.contacts$.update(list => upsertObject(list, response.data.contactUnassignTerritory));
+	contacts$.update(list => upsertObject(list, response.data.contactUnassignTerritory));
 }

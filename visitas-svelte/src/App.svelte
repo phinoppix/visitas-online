@@ -4,17 +4,14 @@
   import {initApolloClient} from './graphqlConfig';
   import Header from './design-system/Header.svelte';
   import TerritoryRoutes from './territory/TerritoryRoutes.svelte';
-  import ContactRoutes from './contact/ContactRoutes.svelte';
+  import {ContactRoutes} from './contact';
   import DashboardRoutes from './dashboard/DashboardRoutes.svelte';
 
-  import {Login, authClient} from './auth';
-  import {authorized} from './store';
+  import {Login, asyncUpdateAuthState} from './auth';
 
   initApolloClient();
 
-  authClient.tokenManager.get(token => {
-    authorized.update(_ => !!token);
-  });
+  asyncUpdateAuthState();
 </script>
 
 <Router url="">
@@ -22,6 +19,6 @@
   <Route path="/login" component={Login}/>
 
   <TerritoryRoutes/>
-  <!--  <ContactRoutes/>-->
+  <ContactRoutes/>
   <DashboardRoutes/>
 </Router>

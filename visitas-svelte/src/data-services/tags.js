@@ -7,8 +7,7 @@ const QUERY_TAGS = gql`query {
     }
 }`;
 
-export async function getTags() {
-	const client = getClient();
+export async function getTags(client) {
 	const qry = await query(client, {
 		query: QUERY_TAGS
 	});

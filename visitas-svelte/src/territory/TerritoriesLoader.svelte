@@ -14,3 +14,8 @@
   }
 
 </script>
+{#if $territoriesInitialized}
+  <slot></slot>
+{:else}
+  <div>Loading...</div>
+{/if}

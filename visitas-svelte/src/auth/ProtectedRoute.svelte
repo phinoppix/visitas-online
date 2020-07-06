@@ -2,9 +2,8 @@
   import Authorized from './Authorized.svelte';
   import {Route} from 'svelte-routing';
 </script>
-<Route {...$$restProps}>
+<Route {...$$restProps} let:params>
   <Authorized>
-    <slot></slot>
+    <slot {params}></slot>
   </Authorized>
 </Route>
-

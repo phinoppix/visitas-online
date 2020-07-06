@@ -33,9 +33,14 @@ const logOut = () => {
 
 export const asyncGetAuthToken = async () => await authClient.tokenManager.get('id_token');
 
-export const asyncTryRedirectToLogin = async () => {
+export const asyncUpdateAuthState = async () => {
 	const token = await asyncGetAuthToken();
 	authorized.update(_ => !!token);
+	return token;
+}
+
+export const asyncTryRedirectToLogin = async () => {
+	const token = await asyncUpdateAuthState();
 	if (!token) {
 		navigate('/login', {replace: true});
 	}

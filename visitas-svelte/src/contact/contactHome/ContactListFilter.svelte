@@ -1,7 +1,7 @@
 <script>
   import {onMount, createEventDispatcher} from 'svelte';
   import TagFilters from '../TagFilters.svelte';
-  import * as store from '../../store';
+  import {contactsInitialized, territories$} from '../../store';
   import {cache} from '../../util';
 
   const NO_TERRITORY = 'NO_TERRITORY';
@@ -19,8 +19,9 @@
       tags: filterTags
     });
   }
+
   onMount(() => {
-    store.territories$.subscribe(list => {
+    territories$.subscribe(list => {
       options = options.concat(list);
     });
 
@@ -28,7 +29,9 @@
     filterTerritory = cacheFilter.filterTerritory || NO_TERRITORY;
     filterTags = cacheFilter.filterTags || [];
 
-    applyFilter();
+    if (!$contactsInitialized) {
+      applyFilter();
+    }
   });
 
   const filterChanged = () => {

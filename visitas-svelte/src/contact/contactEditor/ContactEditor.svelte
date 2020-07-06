@@ -1,11 +1,12 @@
 <script>
   import {onMount} from 'svelte';
   import {navigate} from 'svelte-routing';
+  import {getClient} from 'svelte-apollo';
 
   import {parseMapboxPlaceData} from '../../util';
   import {InlineAlert, InputField, Button, TextareaField} from '../../design-system';
   import {upsertContact, removeContact} from '../../data-services/contact';
-  import * as store from '../../store';
+  import {contacts$, tags} from '../../store';
   import TagFilters from '../TagFilters.svelte';
   import AddressInputField from './AddressInputField.svelte';
   import {STATE_EDITING, STATE_MIGRATING} from './common';
@@ -25,7 +26,10 @@
   let canDelete = false;
   let supportedTags = [];
 
+  let gqlClient = getClient();
+
   $: targetAddress = (inputAddressData && inputAddressData.place_name) || inputAddressMigration;
+  $: supportedTags = $tags.map(data => data.tag);
 
   const urlCaller = new URLSearchParams(window.location.search).get('fr');
 
@@ -42,7 +46,7 @@
     };
 
     try {
-      await upsertContact(inputContact);
+      await upsertContact(gqlClient, inputContact);
       navigate(urlCaller);  // TODO: Will revisit once we start supporting contact map boundaries
     } catch (error) {
       message = error.message;
@@ -66,7 +70,7 @@
   const dismissAlert = () => message = '';
 
   onMount(async () => {
-    const unsubContacts = store.contacts$.subscribe(list => {
+    const unsubContacts = contacts$.subscribe(list => {
       const contact = list.find(c => c.id === edit_id);
       if (!contact) return;
       inputName = contact.name;
@@ -79,16 +83,12 @@
       canDelete = true;
     });
 
-    const unsubTags = store.tags$.subscribe(data => supportedTags = data.map(t => t.tag).sort());
-
     return () => {
       unsubContacts();
-      unsubTags();
     }
   });
 
   const onConfirmAddress = e => {
-    console.log('onConfirmAddress', e.detail.addressFinderResult.data.result);
     candidateAddress = e.detail.addressFinderResult.data.result;
   }
 
@@ -107,7 +107,7 @@
     <InputField text="Email" bind:value={inputEmail} type="email"/>
     <TextareaField text="Remarks" bind:value={inputRemarks}/>
     <p>Tags:</p>
-    <TagFilters bind:tags={inputTags} {supportedTags}/>
+    <TagFilters bind:tags={inputTags} supportedTags={$tags.map(data => data.tag)}/>
   </section>
   <div>
     <Button on:click={saveClick}>Save</Button>
