@@ -6,6 +6,7 @@
   import {territories$} from '../store';
   import {InlineAlert, FrameBox, InputField, Button} from '../design-system';
   import Map from './Map.svelte';
+  import TerritoriesLoader from './TerritoriesLoader.svelte';
 
   export let edit_id = '';
 
@@ -81,24 +82,28 @@
     justify-content: center;
   }
 </style>
-<InlineAlert {message} on:dismissAlert={dismissAlert}/>
-<main>
-  <div class="left">
-    <InputField text="Code:" bind:value={inputCode} maxlength="30" />
-    <InputField text="Name:" bind:value={inputName} maxlength="50" />
-    <div>
-      <Button on:click={saveTerritory}>Save</Button>
-      <Button on:click={cancelClick}>Cancel</Button>
-        {#if canDelete}
-          <Button on:click={removeClick} class="caution">Remove territory</Button>
-        {/if}
+<TerritoriesLoader>
+  <InlineAlert {message} on:dismissAlert={dismissAlert}/>
+  <main>
+    <div class="left">
+      <InputField text="Code:" bind:value={inputCode} maxlength="30"/>
+      <InputField text="Name:" bind:value={inputName} maxlength="50"/>
+      <div>
+        <Button on:click={saveTerritory}>Save</Button>
+        <Button on:click={cancelClick}>Cancel</Button>
+          {#if canDelete}
+            <Button on:click={removeClick} class="caution">Remove territory</Button>
+          {/if}
+      </div>
+      <FrameBox title="Recent activities" titleClass="small-title">
+        <p>Content here</p>
+      </FrameBox>
+      <FrameBox title="Addresses (count: 64)" titleClass="small-title">
+        <p>Content here</p>
+      </FrameBox>
     </div>
-    <FrameBox title="Recent activities" titleClass="small-title">
-      <p>Content here</p>
-    </FrameBox>
-    <FrameBox title="Addresses (count: 64)" titleClass="small-title">
-      <p>Content here</p>
-    </FrameBox>
-  </div>
-  <div><Map /></div>
-</main>
+    <div>
+      <Map/>
+    </div>
+  </main>
+</TerritoriesLoader>

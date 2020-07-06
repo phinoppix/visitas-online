@@ -51,7 +51,7 @@ export const sqlStreamAsJson = <T extends ColumnValuePair>(rows: RowData[], colu
 				R.pipe(
 					R.values,
 					R.head,
-					R.prop('value')
+					R.prop('value') as (x: unknown) => unknown
 				), rows) as string[]))
 	) as T[];
 

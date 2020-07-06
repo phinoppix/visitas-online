@@ -60,6 +60,7 @@ export const parseMapboxPlaceData = data => {
 
 export const cache = {
 	CONTACT_LIST_FILTER: 'visitas:CONTACT_LIST_FILTER',
+	TOKENS: 'visitas:TOKENS',
 	get: (key) => {
 		try {
 			return localStorage && JSON.parse(localStorage.getItem(key));

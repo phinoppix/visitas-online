@@ -54,9 +54,24 @@ services:
       ACCEPT_EULA: Y
       SA_PASSWORD: Visitas!2020
       MSSQL_PID: Express
-    networks:
-      - visitas-net
+    #networks:
+    #  - visitas-net
     ports:
       - "1433:1433"
     volumes:
       - mssql-vol:/var/opt/mssql
+
+  visitas-api:
+    build: ../visitas-api
+    image: phinoppix/visitas-api_1.0
+    environment:
+      SQLHOST: host.docker.internal
+      SQLUSER: sa
+      SQLPASSWORD: Visitas!2020
+      SQLAPPNAME: visitas-api
+      SQLINITDB: visitas-v1
+    ports:
+      - "4000:4000"
+    networks:
+      - visitas-net
+    container_name: visitas-v1

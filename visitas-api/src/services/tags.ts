@@ -7,8 +7,8 @@ export async function getTags(divisionId: string): Promise<RowData[]> {
 	const cmd = new SqlCommand({
 		connection: con,
 		commandText: `
-    select tag from vis.divisionTag dt inner join vis.division d on dt.divisionId = d.id
-		where divisionId = @divisionId`,
+    select tag from vis.divisionTag dt inner join vis.division d on dt.division_id = d.id
+		where division_id = @divisionId`,
 		parameters: [{name: 'divisionId', value: divisionId}]
 	});
 

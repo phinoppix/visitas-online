@@ -2,8 +2,7 @@
   import {onMount, createEventDispatcher} from 'svelte';
   import mapbox from 'mapbox-gl';
   import {isEmptyOrNil} from '../../util';
-
-  import {appEnv} from '../../envConfig';
+  import {appConfig} from '../../appConfig';
 
   export let findLocation = null;
   const EVENT_ADDRESS_FINDER_RESULT = 'addressFinder_result';
@@ -21,7 +20,7 @@
     geocoder = new MapboxGeocoder({
       accessToken: mapbox.accessToken,
       types: 'postcode,address',
-      countries: appEnv.mapCountry
+      countries: appConfig.map.country
     });
     geocoder.on('result', data => {
       dispatch(EVENT_ADDRESS_FINDER_RESULT, {data}); // TODO: Call utility to parse data into visitas-compatible data structure
@@ -35,6 +34,7 @@
     flex: 1;
     max-width: 70%;
   }
+
   :global(div.mapboxgl-ctrl-geocoder) {
     width: 100% !important;
     max-width: unset !important;

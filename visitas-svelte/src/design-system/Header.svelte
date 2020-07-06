@@ -1,6 +1,8 @@
 <script>
   import {Link} from 'svelte-routing';
+  import {logOut} from '../auth/widget';
 </script>
+
 <header>
   <span>Visitas</span>
   <span class="spacer"></span>
@@ -11,7 +13,7 @@
       <li><Link to="/contacts">Contacts</Link></li>
     </ol>
   </nav>
-  <button>signout</button>
+  <button on:click={logOut}>signout</button>
 </header>
 
 <style>
