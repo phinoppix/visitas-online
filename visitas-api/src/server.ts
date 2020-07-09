@@ -14,7 +14,7 @@ const server = new ApolloServer({
   context: async ({ req }) => {
   	const header = req.header('authorization');
   	if (!header || !header.startsWith('Bearer ')) {
-  		throw 'No Authorization header with bearer token';
+  		return {};
 		}
   	const token = header!.split(' ')[1];
     const tokenVerifier = new OktaJwtVerifier({
